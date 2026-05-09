@@ -22,7 +22,7 @@ export function PhotoCaptionInput({
     <div className={cn("w-full max-w-xs", className)}>
       <label
         htmlFor={id}
-        className="mb-2 block text-[calc(0.875rem_+_8pt)] font-normal tracking-wide text-[#8C7B6E]"
+        className="mb-2 block text-[calc(0.875rem_+_4pt)] font-normal tracking-wide text-[#8C7B6E]"
       >
         Add a caption (optional)
       </label>
@@ -34,7 +34,7 @@ export function PhotoCaptionInput({
         placeholder="A few words beside the image…"
         autoComplete="off"
         className={cn(
-          "w-full rounded-xl border border-[#c9bfb3] bg-[#FAF6F0] px-3.5 py-2.5 text-[calc(0.875rem_+_8pt)] text-[#5c4f45]",
+          "w-full rounded-xl border border-[#c9bfb3] bg-[#FAF6F0] px-3.5 py-2.5 text-[calc(0.875rem_+_4pt)] text-[#5c4f45]",
           "placeholder:text-[#8C7B6E]",
           "outline-none transition-[border-color,box-shadow] focus:border-[#8C7B6E] focus:ring-2 focus:ring-[#C17B5A]/15",
         )}

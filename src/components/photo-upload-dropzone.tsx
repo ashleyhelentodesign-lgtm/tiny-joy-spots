@@ -121,7 +121,7 @@ export function PhotoUploadDropzone({
           aria-pressed={!textOnly}
           onClick={setPhotoMode}
           className={cn(
-            "flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-[calc(0.875rem_+_8pt)] font-medium transition-colors",
+            "flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-[calc(0.875rem_+_4pt)] font-medium transition-colors",
             !textOnly
               ? "bg-[#C17B5A] text-[#fff9f2] shadow-sm"
               : "text-[#6b4f45] hover:bg-[#f0e4d4]",
@@ -135,7 +135,7 @@ export function PhotoUploadDropzone({
           aria-pressed={textOnly}
           onClick={setTextOnlyMode}
           className={cn(
-            "flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-[calc(0.875rem_+_8pt)] font-medium transition-colors",
+            "flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-[calc(0.875rem_+_4pt)] font-medium transition-colors",
             textOnly
               ? "bg-[#C17B5A] text-[#fff9f2] shadow-sm"
               : "text-[#6b4f45] hover:bg-[#f0e4d4]",
@@ -149,7 +149,7 @@ export function PhotoUploadDropzone({
       <div
         className={cn(
           "flex min-h-0 w-full flex-col",
-          compact ? "min-h-0 flex-1" : "min-h-[280px]",
+          compact ? "min-h-0 flex-1" : "min-h-[140px]",
         )}
       >
       {!textOnly ? (
@@ -163,8 +163,8 @@ export function PhotoUploadDropzone({
               className: cn(
                 "relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-3 transition-colors",
                 compact
-                  ? "min-h-[100px] flex-1 py-4 sm:min-h-[120px] sm:py-5"
-                  : "min-h-[280px] px-4 py-8",
+                  ? "min-h-[50px] flex-1 py-4 sm:min-h-[60px] sm:py-5"
+                  : "min-h-[140px] px-4 py-8",
                 isDragActive
                   ? "border-[#C17B5A] bg-[#f5ebe4]"
                   : "border-[#d4b8a5] bg-[#faf5eb] hover:border-[#C17B5A]/70 hover:bg-[#fff5ef]",
@@ -190,8 +190,8 @@ export function PhotoUploadDropzone({
                   className={cn(
                     "text-center font-medium text-[#5c4033]",
                     compact
-                      ? "text-[calc(0.75rem_+_8pt)]"
-                      : "text-[calc(0.875rem_+_8pt)]",
+                      ? "text-[calc(0.75rem_+_4pt)]"
+                      : "text-[calc(0.875rem_+_4pt)]",
                   )}
                 >
                   {isDragActive
@@ -202,8 +202,8 @@ export function PhotoUploadDropzone({
                   className={cn(
                     "text-center text-[#8b7268]",
                     compact
-                      ? "mt-0.5 text-[calc(0.65rem_+_8pt)]"
-                      : "mt-1 text-[calc(0.75rem_+_8pt)]",
+                      ? "mt-0.5 text-[calc(0.65rem_+_4pt)]"
+                      : "mt-1 text-[calc(0.75rem_+_4pt)]",
                   )}
                 >
                   PNG, JPG, WebP — one image
@@ -230,10 +230,10 @@ export function PhotoUploadDropzone({
                       : "max-h-56",
                   )}
                 />
-                <p className="truncate text-center text-[calc(0.75rem_+_8pt)] text-[#8b7268]">
+                <p className="truncate text-center text-[calc(0.75rem_+_4pt)] text-[#8b7268]">
                   {file.name}
                 </p>
-                <p className="text-center text-[calc(0.75rem_+_8pt)] text-[#8b7268]">
+                <p className="text-center text-[calc(0.75rem_+_4pt)] text-[#8b7268]">
                   Drop another image to replace
                 </p>
               </div>
@@ -265,8 +265,8 @@ export function PhotoUploadDropzone({
                 className={cn(
                   "rounded-lg border border-[#d4b8a5] bg-[#faf5eb] font-medium text-[#5c4033] transition-colors hover:border-[#C17B5A]/50 hover:bg-[#fff9f2]",
                   compact
-                    ? "px-2.5 py-1.5 text-[calc(0.75rem_+_8pt)]"
-                    : "px-4 py-2 text-[calc(0.875rem_+_8pt)]",
+                    ? "px-2.5 py-1.5 text-[calc(0.75rem_+_4pt)]"
+                    : "px-4 py-2 text-[calc(0.875rem_+_4pt)]",
                 )}
               >
                 Choose different photo
@@ -280,8 +280,8 @@ export function PhotoUploadDropzone({
                 className={cn(
                   "inline-flex items-center gap-1.5 rounded-lg border border-transparent bg-[#fdeee8] font-medium text-[#a34a38] transition-colors hover:bg-[#f8ddd4]",
                   compact
-                    ? "px-2.5 py-1.5 text-[calc(0.75rem_+_8pt)]"
-                    : "px-4 py-2 text-[calc(0.875rem_+_8pt)]",
+                    ? "px-2.5 py-1.5 text-[calc(0.75rem_+_4pt)]"
+                    : "px-4 py-2 text-[calc(0.875rem_+_4pt)]",
                 )}
               >
                 <X className="size-4" aria-hidden />
@@ -306,12 +306,12 @@ export function PhotoUploadDropzone({
             rows={compact ? 4 : 1}
             placeholder="Describe your joy spot in words…"
             className={cn(
-              "w-full resize-y rounded-xl border border-[#e8d4c4] bg-[#faf5eb] px-4 text-[calc(0.875rem_+_8pt)] leading-relaxed text-[#3d2b26]",
+              "w-full resize-y rounded-xl border border-[#e8d4c4] bg-[#faf5eb] px-4 text-[calc(0.875rem_+_4pt)] leading-relaxed text-[#3d2b26]",
               "placeholder:text-[#a8988e]",
               "outline-none ring-[#C17B5A]/40 focus:border-[#C17B5A] focus:ring-2",
               compact
-                ? "min-h-[100px] flex-1 py-4 sm:min-h-[120px] sm:py-5"
-                : "min-h-[280px] py-8",
+                ? "min-h-[50px] flex-1 py-4 sm:min-h-[60px] sm:py-5"
+                : "min-h-[140px] py-8",
             )}
           />
         </div>

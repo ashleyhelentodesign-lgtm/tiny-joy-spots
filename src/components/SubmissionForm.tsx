@@ -44,10 +44,10 @@ function todayISODate() {
 }
 
 const fieldLabel =
-  "mb-2 block text-[calc(0.95rem_+_8pt)] font-medium tracking-[0.02em] text-[#3d3530]";
+  "mb-2 block text-[calc(0.95rem_+_4pt)] font-medium tracking-[0.02em] text-[#3d3530]";
 
 const fieldInput =
-  "w-full rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] px-4 py-3.5 text-[calc(1rem_+_8pt)] text-[#2e2824] shadow-inner shadow-black/[0.02] outline-none transition-[border-color,box-shadow] placeholder:text-[#8C7B6E]/70 focus:border-[#C17B5A] focus:ring-2 focus:ring-[#C17B5A]/20";
+  "w-full rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] px-4 py-3.5 text-[calc(1rem_+_4pt)] text-[#2e2824] shadow-inner shadow-black/[0.02] outline-none transition-[border-color,box-shadow] placeholder:text-[#8C7B6E]/70 focus:border-[#C17B5A] focus:ring-2 focus:ring-[#C17B5A]/20";
 
 /** ~2 visible suggestion rows (py-3 + large type); rest scrolls */
 const SUGGEST_LIST_MAX_H = "max-h-[8.5rem]";
@@ -343,7 +343,7 @@ export function SubmissionForm({
 
   /** Matches gallery preview tags (GalleryGrid tag buttons) */
   const selectedTagPillClass =
-    "inline-flex max-w-full min-w-0 shrink-0 items-center justify-center gap-1 rounded-[8px] bg-[#897c70] px-2 py-2 text-[21px] font-normal leading-none text-[#f5f5f5] transition-opacity hover:opacity-90";
+    "inline-flex max-w-full min-w-0 shrink-0 items-center justify-center gap-1 rounded-[4px] bg-[#897c70] px-2 py-2 text-[11px] font-normal leading-none text-[#f5f5f5] transition-opacity hover:opacity-90";
 
   const fieldsColumn = (
     <>
@@ -381,8 +381,8 @@ export function SubmissionForm({
           <span className={fieldLabel}>Tags</span>
           <p
             className={cn(
-              "mb-2 text-[calc(0.85rem_+_8pt)] leading-relaxed text-[#6d625a]",
-              isModal && "text-[calc(0.8rem_+_8pt)]",
+              "mb-2 text-[calc(0.85rem_+_4pt)] leading-relaxed text-[#6d625a]",
+              isModal && "text-[calc(0.8rem_+_4pt)]",
             )}
           >
             As you type, pick an existing tag or add a new one.
@@ -453,7 +453,7 @@ export function SubmissionForm({
                         type="button"
                         role="option"
                         aria-selected={false}
-                        className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_8pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
+                        className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_4pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
                         onMouseDown={(ev) => ev.preventDefault()}
                         onClick={() => addTag(tagInput)}
                       >
@@ -467,7 +467,7 @@ export function SubmissionForm({
                       type="button"
                       role="option"
                       aria-selected={false}
-                      className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_8pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
+                      className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_4pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
                       onMouseDown={(ev) => ev.preventDefault()}
                       onClick={() => addTag(t.name)}
                     >
@@ -483,8 +483,8 @@ export function SubmissionForm({
           <span className={fieldLabel}>Mood</span>
           <p
             className={cn(
-              "mb-2 text-[calc(0.85rem_+_8pt)] leading-relaxed text-[#6d625a]",
-              isModal && "text-[calc(0.8rem_+_8pt)]",
+              "mb-2 text-[calc(0.85rem_+_4pt)] leading-relaxed text-[#6d625a]",
+              isModal && "text-[calc(0.8rem_+_4pt)]",
             )}
           >
             In one word, what&apos;s the mood?
@@ -550,7 +550,7 @@ export function SubmissionForm({
               >
                 <ChevronDown
                   className={cn(
-                    "size-[30px] transition-transform duration-200",
+                    "size-[15px] transition-transform duration-200",
                     moodSuggestOpen && "rotate-180",
                   )}
                   strokeWidth={2}
@@ -575,7 +575,7 @@ export function SubmissionForm({
                       type="button"
                       role="option"
                       aria-selected={false}
-                      className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_8pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
+                      className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_4pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
                       onMouseDown={(ev) => ev.preventDefault()}
                       onClick={() => commitMood(moodInput)}
                     >
@@ -591,7 +591,7 @@ export function SubmissionForm({
                       aria-selected={
                         mood !== null && mood.toLowerCase() === m.toLowerCase()
                       }
-                      className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_8pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
+                      className="w-full px-4 py-3 text-left text-[calc(0.875rem_+_4pt)] text-[#2e2824] hover:bg-[#ebe6e0]"
                       onMouseDown={(ev) => ev.preventDefault()}
                       onClick={() => pickMoodOption(m)}
                     >
@@ -627,7 +627,7 @@ export function SubmissionForm({
     : "flex flex-col gap-10";
 
   const modalScrollInnerClass =
-    "joy-scroll-persistent flex min-h-0 flex-1 flex-col overscroll-contain px-[clamp(1rem,3vw,2.5rem)] pb-6 pt-10 sm:pb-8 sm:pt-12 [&_input]:text-[clamp(calc(1rem_+_8pt),calc(1rem_+_0.35vw_+_8pt),calc(1.125rem_+_8pt))] [&_textarea]:text-[clamp(calc(1rem_+_8pt),calc(1rem_+_0.35vw_+_8pt),calc(1.125rem_+_8pt))]";
+    "joy-scroll-persistent flex min-h-0 flex-1 flex-col overscroll-contain px-[clamp(1rem,1.5vw,2.5rem)] pb-6 pt-10 sm:pb-8 sm:pt-12 [&_input]:text-[clamp(calc(1rem_+_4pt),calc(1rem_+_0.175vw_+_4pt),calc(1.125rem_+_4pt))] [&_textarea]:text-[clamp(calc(1rem_+_4pt),calc(1rem_+_0.175vw_+_4pt),calc(1.125rem_+_4pt))]";
 
   const formHeader = (
     <header
@@ -641,8 +641,8 @@ export function SubmissionForm({
         className={cn(
           "font-serif font-normal italic leading-tight tracking-tight text-[#2e2824]",
           isModal
-            ? "text-[clamp(calc(1.75rem_+_8pt),calc(3.5vw_+_8pt),calc(2.75rem_+_8pt))]"
-            : "text-[calc(2rem_+_8pt)] sm:text-[calc(2.5rem_+_8pt)]",
+            ? "text-[clamp(calc(1.75rem_+_4pt),calc(1.75vw_+_4pt),calc(2.75rem_+_4pt))]"
+            : "text-[calc(2rem_+_4pt)] sm:text-[calc(2.5rem_+_4pt)]",
         )}
       >
         {title}
@@ -652,8 +652,8 @@ export function SubmissionForm({
           className={cn(
             "mx-auto mt-3 max-w-md leading-relaxed text-[#8C7B6E]",
             isModal
-              ? "text-[clamp(calc(0.875rem_+_8pt),calc(1.2vw_+_8pt),calc(1rem_+_8pt))]"
-              : "text-[calc(0.95rem_+_8pt)]",
+              ? "text-[clamp(calc(0.875rem_+_4pt),calc(0.6vw_+_4pt),calc(1rem_+_4pt))]"
+              : "text-[calc(0.95rem_+_4pt)]",
           )}
         >
           {subtitle}
@@ -723,7 +723,7 @@ export function SubmissionForm({
       {formError && (
         <p
           className={cn(
-            "text-center text-[calc(0.875rem_+_8pt)] text-[#a85c4a]",
+            "text-center text-[calc(0.875rem_+_4pt)] text-[#a85c4a]",
             isModal ? "mt-6" : "mt-8",
           )}
           role="alert"
@@ -734,7 +734,7 @@ export function SubmissionForm({
       {formSuccess && (
         <p
           className={cn(
-            "text-center text-[calc(0.875rem_+_8pt)] text-[#7A9E87]",
+            "text-center text-[calc(0.875rem_+_4pt)] text-[#7A9E87]",
             isModal ? "mt-6" : "mt-8",
           )}
         >
@@ -749,8 +749,8 @@ export function SubmissionForm({
           className={cn(
             "w-full rounded-2xl bg-[#C17B5A] font-medium text-white shadow-sm transition-[transform,opacity,box-shadow] hover:bg-[#b06d4e] disabled:pointer-events-none disabled:opacity-50",
             isModal
-              ? "py-[clamp(0.875rem,1.5vw,1.125rem)] text-[clamp(calc(1rem_+_8pt),calc(1.4vw_+_8pt),calc(1.25rem_+_8pt))]"
-              : "py-4 text-[calc(1.125rem_+_8pt)]",
+              ? "py-[clamp(0.875rem,0.75vw,1.125rem)] text-[clamp(calc(1rem_+_4pt),calc(0.7vw_+_4pt),calc(1.25rem_+_4pt))]"
+              : "py-4 text-[calc(1.125rem_+_4pt)]",
           )}
         >
           {submitting ? (

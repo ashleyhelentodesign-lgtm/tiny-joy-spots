@@ -117,13 +117,13 @@ export function ShareJoySpotModal({
                 <button
                   type="button"
                   onClick={shareAnother}
-                  className="rounded-full border border-[#C17B5A] bg-transparent px-6 py-3 text-[16px] font-medium text-[#C17B5A] transition-colors hover:bg-[#C17B5A]/10"
+                  className="rounded-full border border-[#C17B5A] bg-transparent px-6 py-3 text-[8px] font-medium text-[#C17B5A] transition-colors hover:bg-[#C17B5A]/10"
                 >
                   Share another joy
                 </button>
                 <Link
                   href="/gallery"
-                  className="inline-flex items-center justify-center rounded-full bg-[#C17B5A] px-6 py-3 text-[16px] font-medium text-white transition-colors hover:bg-[#b06d4e]"
+                  className="inline-flex items-center justify-center rounded-full bg-[#C17B5A] px-6 py-3 text-[8px] font-medium text-white transition-colors hover:bg-[#b06d4e]"
                   onClick={() => onOpenChange(false)}
                 >
                   Explore joy spots

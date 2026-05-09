@@ -106,7 +106,7 @@ function GalleryPreviewBottom({
           data-node-id="8141:533"
         >
           <p
-            className="m-0 h-fit min-h-0 min-w-0 shrink-0 text-[31px] font-bold leading-none text-black"
+            className="m-0 h-fit min-h-0 min-w-0 shrink-0 text-[16px] font-bold leading-none text-black"
             data-node-id="8141:534"
           >
             {spot.contributor_name?.trim()
@@ -116,7 +116,7 @@ function GalleryPreviewBottom({
         </div>
         {showCaption && captionText ? (
           <p
-            className="m-0 mt-1.5 h-fit min-h-0 w-full min-w-0 shrink-0 text-[31px] font-normal leading-normal text-black"
+            className="m-0 mt-1.5 h-fit min-h-0 w-full min-w-0 shrink-0 text-[16px] font-normal leading-normal text-black"
             data-node-id="8141:535"
           >
             <span className="line-clamp-6">{captionText}</span>
@@ -131,7 +131,7 @@ function GalleryPreviewBottom({
               key={tag.id}
               type="button"
               data-name="Tag"
-              className="inline-flex max-w-full min-w-0 shrink-0 items-center justify-center gap-1 rounded-[8px] bg-[#897c70] px-2 py-2 text-[21px] font-normal leading-none text-[#f5f5f5] transition-opacity hover:opacity-90"
+              className="inline-flex max-w-full min-w-0 shrink-0 items-center justify-center gap-1 rounded-[4px] bg-[#897c70] px-2 py-2 text-[11px] font-normal leading-none text-[#f5f5f5] transition-opacity hover:opacity-90"
               onClick={(e) => {
                 e.stopPropagation();
                 onTagClick(tag.name);
@@ -195,7 +195,7 @@ export function GalleryGrid({ spots, className }: GalleryGridProps) {
         {filtered.length === 0 ? (
           <p
             className="py-16 text-center leading-relaxed text-[#3d3530]"
-            style={{ fontSize: "16px" }}
+            style={{ fontSize: "8px" }}
           >
             No joy spots match your search yet.
           </p>
@@ -228,7 +228,7 @@ export function GalleryGrid({ spots, className }: GalleryGridProps) {
                         aria-label="Open joy spot details"
                         data-node-id={hasPhoto ? "8141:530" : "8141:551"}
                         data-name="Preview of post"
-                        className="group flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-[19px] bg-white text-left transition-opacity hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C17B5A]"
+                        className="group flex w-full min-w-0 cursor-pointer flex-col overflow-hidden rounded-[10px] bg-white text-left transition-opacity hover:opacity-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#C17B5A]"
                       >
                         {hasPhoto ? (
                           <div
@@ -242,19 +242,19 @@ export function GalleryGrid({ spots, className }: GalleryGridProps) {
                               height={0}
                               sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 25vw, 20vw"
                               unoptimized
-                              className="block h-auto w-full rounded-[19px]"
+                              className="block h-auto w-full rounded-[10px]"
                               style={{ width: "100%", height: "auto" }}
                             />
                           </div>
                         ) : (
                           /* Text-only preview — Figma 8141:551 (aligns w/ detail 8141:528 / 8141:524) */
                           <div
-                            className="flex w-full shrink-0 flex-col items-center justify-center overflow-hidden rounded-t-[19px] bg-[#FAF6F1] p-4 font-sans"
+                            className="flex w-full shrink-0 flex-col items-center justify-center overflow-hidden rounded-t-[10px] bg-[#FAF6F1] p-4 font-sans"
                             data-node-id="8141:551"
                           >
                             {textOnlyPrimary ? (
                               <p
-                                className="h-fit min-h-0 w-full min-w-0 shrink-0 text-left text-[clamp(1.375rem,4.5vw,3.125rem)] font-normal leading-normal text-black"
+                                className="h-fit min-h-0 w-full min-w-0 shrink-0 text-left text-[clamp(1.375rem,2.25vw,3.125rem)] font-normal leading-normal text-black"
                                 data-node-id="8141:524"
                               >
                                 <span className="line-clamp-[10]">

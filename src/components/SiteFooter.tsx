@@ -49,7 +49,7 @@ function EmailIcon({ className }: { className?: string }) {
 }
 
 const iconLinkClass =
-  "inline-flex size-[72px] shrink-0 items-center justify-center rounded-md text-[#2e2824] transition-colors hover:text-[#C17B5A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C17B5A]";
+  "inline-flex size-[36px] shrink-0 items-center justify-center rounded-md text-[#2e2824] transition-colors hover:text-[#C17B5A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C17B5A]";
 
 export function SiteFooter() {
   return (
@@ -58,13 +58,13 @@ export function SiteFooter() {
       role="contentinfo"
     >
       <div className="w-full py-2 sm:py-3">
-        <div className="flex w-full flex-col gap-2 px-[144px]">
+        <div className="flex w-full flex-col gap-2 px-[72px]">
           <p className="m-0 text-[clamp(2.025rem,4.5vw,2.475rem)] font-bold leading-tight text-black">
             tiny joy spots
           </p>
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
             <div className="flex min-w-0 flex-wrap items-center gap-6">
-              <span className="text-[27px] font-normal leading-snug text-black sm:text-[28.8px]">
+              <span className="text-[14px] font-normal leading-snug text-black sm:text-[14.4px]">
                 Drop me a note, question, or feedback!
               </span>
               <a
@@ -74,17 +74,17 @@ export function SiteFooter() {
                 className={iconLinkClass}
                 aria-label="Ashley on Instagram (opens in a new tab)"
               >
-                <InstagramIcon className="size-[36px]" />
+                <InstagramIcon className="size-[18px]" />
               </a>
               <a
                 href="mailto:ashleyhelento.design@gmail.com"
                 className={iconLinkClass}
                 aria-label="Email Ashley"
               >
-                <EmailIcon className="size-[36px]" />
+                <EmailIcon className="size-[18px]" />
               </a>
             </div>
-            <p className="m-0 w-full shrink-0 text-right text-[27px] font-normal leading-snug text-black sm:w-auto sm:text-[28.8px]">
+            <p className="m-0 w-full shrink-0 text-right text-[14px] font-normal leading-snug text-black sm:w-auto sm:text-[14.4px]">
               Made with joy by ashley to ✨
             </p>
           </div>

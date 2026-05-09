@@ -18,7 +18,7 @@ export function GalleryShell({ spots }: { spots: GallerySpot[] }) {
         <StickySiteHeaderBar>
           <SiteHeader onShareClick={() => setShareOpen(true)} />
         </StickySiteHeaderBar>
-        <div className="px-[144px]">
+        <div className="px-[72px]">
           <GalleryGrid spots={spots} />
         </div>
       </div>

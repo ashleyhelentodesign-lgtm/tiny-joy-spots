@@ -258,9 +258,9 @@ export function ExplorerSearchBar({
             aria-expanded={open && suggestions.length > 0}
             aria-controls="explorer-search-listbox"
             aria-autocomplete="list"
-            className="w-full rounded-full border border-[#e8e2da] bg-white py-4 pl-14 pr-5 leading-normal text-[#2e2824] outline-none transition-[border-color,box-shadow] placeholder:text-[24px] placeholder:text-[#6d625a] focus:border-[#c9bfb3] focus:ring-2 focus:ring-[#C17B5A]/20"
+            className="w-full rounded-full border border-[#e8e2da] bg-white py-4 pl-14 pr-5 leading-normal text-[#2e2824] outline-none transition-[border-color,box-shadow] placeholder:text-[12px] placeholder:text-[#6d625a] focus:border-[#c9bfb3] focus:ring-2 focus:ring-[#C17B5A]/20"
             style={{
-              fontSize: "24px",
+              fontSize: "12px",
               lineHeight: 1.5,
             }}
             autoComplete="off"
@@ -283,7 +283,7 @@ export function ExplorerSearchBar({
                         ? "bg-[#C17B5A]/15"
                         : "hover:bg-[#7A9E87]/10",
                     )}
-                    style={{ fontSize: "24px" }}
+                    style={{ fontSize: "12px" }}
                     onMouseEnter={() => setHighlight(i)}
                     onClick={() => addChip(s)}
                   >
@@ -303,10 +303,10 @@ export function ExplorerSearchBar({
                   type="button"
                   onClick={() => removeChip(c.id)}
                   className={cn(filterChipClass)}
-                  style={{ fontSize: "24px" }}
+                  style={{ fontSize: "12px" }}
                 >
                   <span className="min-w-0 flex-1 truncate">{c.label}</span>
-                  <CloseIcon className="size-[18px] shrink-0 text-white/90" />
+                  <CloseIcon className="size-[9px] shrink-0 text-white/90" />
                   <span className="sr-only">Remove filter {c.label}</span>
                 </button>
               </li>

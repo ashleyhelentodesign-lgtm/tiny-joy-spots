@@ -11,7 +11,7 @@ export function SiteHeader({ onShareClick }: SiteHeaderProps) {
         <div className="min-w-0" aria-hidden />
         <h1
           className="text-center font-serif font-normal italic leading-tight tracking-tight text-[#2e2824]"
-          style={{ fontSize: "64px" }}
+          style={{ fontSize: "32px" }}
         >
           tiny joy spots
         </h1>
@@ -19,7 +19,7 @@ export function SiteHeader({ onShareClick }: SiteHeaderProps) {
           <button
             type="button"
             className="rounded-full bg-[#C17B5A] px-7 py-4 font-medium leading-snug text-white transition-colors hover:bg-[#b06d4e] sm:px-8"
-            style={{ fontSize: "28px" }}
+            style={{ fontSize: "14px" }}
             onClick={onShareClick}
           >
             Share a joyspot

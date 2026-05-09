@@ -99,7 +99,7 @@ function featureToLocation(f: PhotonFeature): LocationData | null {
 }
 
 const inputShell =
-  "w-full rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] py-3.5 pl-11 pr-11 text-[calc(1rem_+_8pt)] text-[#2e2824] shadow-inner shadow-black/[0.02] outline-none transition-[border-color,box-shadow] placeholder:text-[#8C7B6E]/70 focus:border-[#C17B5A] focus:ring-2 focus:ring-[#C17B5A]/20";
+  "w-full rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] py-3.5 pl-11 pr-11 text-[calc(1rem_+_4pt)] text-[#2e2824] shadow-inner shadow-black/[0.02] outline-none transition-[border-color,box-shadow] placeholder:text-[#8C7B6E]/70 focus:border-[#C17B5A] focus:ring-2 focus:ring-[#C17B5A]/20";
 
 const DEBOUNCE_MS = 300;
 const MIN_QUERY = 2;
@@ -323,11 +323,11 @@ export function LocationPicker({
           className="absolute z-30 mt-2 max-h-72 w-full overflow-auto rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] py-1 shadow-lg"
         >
           {loading ? (
-            <li className="px-4 py-3 text-[calc(0.875rem_+_8pt)] text-[#8C7B6E]">
+            <li className="px-4 py-3 text-[calc(0.875rem_+_4pt)] text-[#8C7B6E]">
               Searching…
             </li>
           ) : rows.length === 0 ? (
-            <li className="px-4 py-3 text-[calc(0.875rem_+_8pt)] text-[#8C7B6E]">
+            <li className="px-4 py-3 text-[calc(0.875rem_+_4pt)] text-[#8C7B6E]">
               No places found
             </li>
           ) : (
@@ -342,7 +342,7 @@ export function LocationPicker({
                     aria-selected={active}
                     data-idx={idx}
                     className={cn(
-                      "flex w-full items-start gap-2 px-4 py-3 text-left text-[calc(0.875rem_+_8pt)] transition-colors",
+                      "flex w-full items-start gap-2 px-4 py-3 text-left text-[calc(0.875rem_+_4pt)] transition-colors",
                       active ? "bg-[#ebe6e0]" : "hover:bg-[#f5f0ea]",
                     )}
                     onMouseDown={(e) => {
@@ -354,7 +354,7 @@ export function LocationPicker({
                     <span className="min-w-0 flex-1 leading-snug text-[#2e2824]">
                       {location.display}
                     </span>
-                    <span className="shrink-0 rounded-full border border-[#d4ccc2] bg-[#f0ebe4] px-2 py-0.5 text-[calc(0.7rem_+_6pt)] font-medium capitalize text-[#5c4f45]">
+                    <span className="shrink-0 rounded-full border border-[#d4ccc2] bg-[#f0ebe4] px-2 py-0.5 text-[calc(0.7rem_+_3pt)] font-medium capitalize text-[#5c4f45]">
                       {pill}
                     </span>
                   </button>

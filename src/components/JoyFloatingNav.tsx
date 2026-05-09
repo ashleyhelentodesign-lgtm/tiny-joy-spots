@@ -78,7 +78,7 @@ function NodeLinkIcon({ className }: { className?: string }) {
 
 /** Expands on hover to reveal label; icon column stays 70×70. */
 const navRowClass =
-  "group flex h-[70px] max-w-[70px] cursor-pointer items-stretch overflow-hidden rounded-full transition-[max-width,box-shadow,color,background-color] duration-200 ease-out hover:max-w-[min(22rem,calc(100vw-3rem))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C17B5A] active:scale-[0.98]";
+  "group flex h-[35px] max-w-[35px] cursor-pointer items-stretch overflow-hidden rounded-full transition-[max-width,box-shadow,color,background-color] duration-200 ease-out hover:max-w-[min(11rem,calc(100vw-3rem))] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C17B5A] active:scale-[0.98]";
 
 export function JoyFloatingNav() {
   const pathname = usePathname() ?? "";
@@ -104,13 +104,13 @@ export function JoyFloatingNav() {
           aria-current={isGallery ? "page" : undefined}
           title="Gallery mode"
         >
-          <span className="flex h-[70px] w-[70px] shrink-0 items-center justify-center">
-            <GalleryIcon className="size-[35px] transition-transform duration-200 ease-out group-hover:scale-110" />
+          <span className="flex h-[35px] w-[35px] shrink-0 items-center justify-center">
+            <GalleryIcon className="size-[18px] transition-transform duration-200 ease-out group-hover:scale-110" />
           </span>
           <span
             aria-hidden
             className="flex min-w-0 items-center self-center whitespace-nowrap pr-3 font-semibold leading-none opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-            style={{ fontSize: "24px" }}
+            style={{ fontSize: "12px" }}
           >
             Gallery mode
           </span>
@@ -127,13 +127,13 @@ export function JoyFloatingNav() {
           aria-current={isTagMap ? "page" : undefined}
           title="Explorer mode"
         >
-          <span className="flex h-[70px] w-[70px] shrink-0 items-center justify-center">
-            <NodeLinkIcon className="size-[35px] transition-transform duration-200 ease-out group-hover:scale-110" />
+          <span className="flex h-[35px] w-[35px] shrink-0 items-center justify-center">
+            <NodeLinkIcon className="size-[18px] transition-transform duration-200 ease-out group-hover:scale-110" />
           </span>
           <span
             aria-hidden
             className="flex min-w-0 items-center self-center whitespace-nowrap pr-3 font-semibold leading-none opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-            style={{ fontSize: "24px" }}
+            style={{ fontSize: "12px" }}
           >
             Explorer mode
           </span>

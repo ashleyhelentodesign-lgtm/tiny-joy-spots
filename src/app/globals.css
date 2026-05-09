@@ -130,23 +130,25 @@
   }
   html {
     @apply font-sans;
+    /* Halves rem-based Tailwind scale site-wide (~50% UI) */
+    font-size: 50%;
     scrollbar-gutter: stable; /* reserve space so layout doesn’t shift when scrollbars appear */
     scrollbar-width: thin;
     scrollbar-color: #a89b8f #f0ebe4;
   }
 
   html::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
   }
 
   html::-webkit-scrollbar-track {
     background: #f0ebe4;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   html::-webkit-scrollbar-thumb {
     background: #a89b8f;
-    border-radius: 8px;
+    border-radius: 4px;
     min-height: 2.5rem;
   }
   input,
@@ -167,17 +169,17 @@
   }
 
   .joy-scroll-persistent::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
   }
 
   .joy-scroll-persistent::-webkit-scrollbar-track {
     background: #f0ebe4;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   .joy-scroll-persistent::-webkit-scrollbar-thumb {
     background: #a89b8f;
-    border-radius: 8px;
+    border-radius: 4px;
     min-height: 2.5rem;
   }
 }

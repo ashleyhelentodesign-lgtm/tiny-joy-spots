@@ -27,27 +27,27 @@ import {
 } from "@/lib/explorer-filters";
 import { cn } from "@/lib/utils";
 
-const PHOTO_SIZE = 300;
+const PHOTO_SIZE = 150;
 const PHOTO_HALF = PHOTO_SIZE / 2;
-const PADDING = 200;
+const PADDING = 100;
 /** Small inset so graph content starts near the visible top-left (not thousands of px away). */
-const CONTENT_INSET = 160;
+const CONTENT_INSET = 80;
 /** Extra space beyond the graph bbox so the map feels like an infinite canvas. */
-const SCROLL_PAD = 24000;
+const SCROLL_PAD = 12000;
 /** Minimum canvas size (px) — large floor so panning always has vast empty space. */
-const MIN_CANVAS_W = 32000;
-const MIN_CANVAS_H = 28000;
+const MIN_CANVAS_W = 16000;
+const MIN_CANVAS_H = 14000;
 const GOLDEN_ANGLE = 2.39996322972865332;
 /** Photos must stay at least this far apart when separation applies. */
-const PHOTO_GAP = 28;
+const PHOTO_GAP = 14;
 const PHOTO_MIN_SEP = PHOTO_SIZE + PHOTO_GAP;
-const PHOTO_TAG_MARGIN = 20;
+const PHOTO_TAG_MARGIN = 10;
 const CROWDED_TAG_THRESHOLD = 6;
 
-/** ~48px label: approximate pill size for layout & collision. */
+/** ~24px label: approximate pill size for layout & collision. */
 function tagPillMetrics(name: string) {
-  const w = Math.min(720, Math.max(140, name.length * 34 + 96));
-  const h = 88;
+  const w = Math.min(360, Math.max(70, name.length * 17 + 48));
+  const h = 44;
   return { w, h, hw: w / 2, hh: h / 2 };
 }
 
@@ -541,7 +541,7 @@ export function TagPhotoMap({ spots }: { spots: GallerySpot[] }) {
             <StickySiteHeaderBar>
               <SiteHeader onShareClick={() => setShareOpen(true)} />
             </StickySiteHeaderBar>
-            <div className="px-[144px]">
+            <div className="px-[72px]">
               <ExplorerSearchBar
                 spots={spots}
                 chips={explorerChips}
@@ -552,8 +552,8 @@ export function TagPhotoMap({ spots }: { spots: GallerySpot[] }) {
 
           {filteredSpots.length === 0 ? (
             <p
-              className="px-[144px] py-16 text-center leading-relaxed text-[#3d3530]"
-              style={{ fontSize: "16px" }}
+              className="px-[72px] py-16 text-center leading-relaxed text-[#3d3530]"
+              style={{ fontSize: "8px" }}
             >
               No joy spots match your filters yet.
             </p>
@@ -563,7 +563,7 @@ export function TagPhotoMap({ spots }: { spots: GallerySpot[] }) {
                 <div className="pointer-events-none absolute inset-x-0 top-4 z-40 flex justify-center">
                   <button
                     type="button"
-                    className="pointer-events-auto rounded-full border border-[#C17B5A]/50 bg-[#FFFCF7]/95 px-7 py-3.5 text-[24px] font-semibold leading-none text-[#6b4a3a] shadow-lg backdrop-blur-sm transition-colors hover:bg-[#faf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C17B5A]"
+                    className="pointer-events-auto rounded-full border border-[#C17B5A]/50 bg-[#FFFCF7]/95 px-7 py-3.5 text-[12px] font-semibold leading-none text-[#6b4a3a] shadow-lg backdrop-blur-sm transition-colors hover:bg-[#faf6f0] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C17B5A]"
                     onClick={() => scrollMapToContentCenter()}
                   >
                     Re-center
@@ -629,7 +629,7 @@ export function TagPhotoMap({ spots }: { spots: GallerySpot[] }) {
                   >
                     <span
                       className="truncate font-normal lowercase leading-snug text-white"
-                      style={{ fontSize: "48px" }}
+                      style={{ fontSize: "24px" }}
                     >
                       {t.name}
                     </span>
@@ -653,8 +653,8 @@ export function TagPhotoMap({ spots }: { spots: GallerySpot[] }) {
                         className={cn(
                           "overflow-hidden rounded-2xl bg-[#ede8e0] transition-transform group-hover:scale-[1.02] group-active:scale-[0.99]",
                           spot.photo_url
-                            ? "size-[300px]"
-                            : "flex min-h-[300px] w-[300px] flex-col",
+                            ? "size-[150px]"
+                            : "flex min-h-[150px] w-[150px] flex-col",
                         )}
                       >
                         {spot.photo_url ? (
@@ -667,13 +667,13 @@ export function TagPhotoMap({ spots }: { spots: GallerySpot[] }) {
                                   ? "Joy spot photo"
                                   : "Joy spot"
                             }
-                            width={300}
-                            height={300}
-                            className="size-[300px] object-cover"
-                            sizes="300px"
+                            width={150}
+                            height={150}
+                            className="size-[150px] object-cover"
+                            sizes="150px"
                           />
                         ) : (
-                          <div className="flex size-[300px] flex-col justify-center gap-2 p-4 text-center">
+                          <div className="flex size-[150px] flex-col justify-center gap-2 p-4 text-center">
                             <span className="text-xs font-medium uppercase tracking-wider text-[#a8988e]">
                               Text
                             </span>

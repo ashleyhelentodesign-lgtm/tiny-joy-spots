@@ -17,7 +17,7 @@ const FIGMA_CARD_BG = "#ffffff";
 const FIGMA_TEXT_ONLY_MAIN_BG = "#FAF6F1";
 const FIGMA_TAG_BG = "#897c70";
 const FIGMA_TAG_TEXT = "#f5f5f5";
-const FIGMA_RADIUS = 19;
+const FIGMA_RADIUS = 10;
 
 /** Divider — Figma MCP (8141:514 / 8126:571) */
 const figmaDividerSrc =
@@ -54,7 +54,7 @@ type DetailTagPillProps = {
 
 function DetailTagPill({ name, interactive, onSelect }: DetailTagPillProps) {
   const className = cn(
-    "inline-flex shrink-0 items-center justify-center gap-1 rounded-[8px] p-2 font-sans text-[21px] leading-none",
+    "inline-flex shrink-0 items-center justify-center gap-1 rounded-[4px] p-2 font-sans text-[11px] leading-none",
     interactive &&
       "cursor-pointer transition-opacity hover:opacity-90 focus-visible:outline focus-visible:ring-2 focus-visible:ring-black/20",
   );
@@ -246,13 +246,13 @@ export function JoySpotDetailDialog({
               </div>
             ) : (
               <div
-                className="flex w-full shrink-0 flex-col rounded-t-[19px] p-9"
+                className="flex w-full shrink-0 flex-col rounded-t-[10px] p-9"
                 style={{ backgroundColor: FIGMA_TEXT_ONLY_MAIN_BG }}
                 data-node-id="8141:528"
               >
                 {textOnlyPrimary ? (
                   <p
-                    className="w-full min-w-0 whitespace-pre-wrap break-words text-[50px] font-normal leading-normal text-black"
+                    className="w-full min-w-0 whitespace-pre-wrap break-words text-[25px] font-normal leading-normal text-black"
                     data-node-id="8141:524"
                   >
                     {textOnlyPrimary}
@@ -282,7 +282,7 @@ export function JoySpotDetailDialog({
                     <div className="min-h-0 min-w-0 flex-1">
                       {contributorLine ? (
                         <p
-                          className="m-0 h-fit min-h-0 text-[31px] font-bold leading-none text-black"
+                          className="m-0 h-fit min-h-0 text-[16px] font-bold leading-none text-black"
                           data-node-id={hasPhoto ? "8126:553" : "8141:508"}
                         >
                           {contributorLine}
@@ -292,18 +292,18 @@ export function JoySpotDetailDialog({
                     {spot.viewer_owns_spot ? (
                       <div className="flex shrink-0 flex-col items-end gap-1 self-center">
                         {deleteError ? (
-                          <p className="max-w-[min(100%,16rem)] text-right text-[19px] leading-snug text-red-700">
+                          <p className="max-w-[min(100%,16rem)] text-right text-[10px] leading-snug text-red-700">
                             {deleteError}
                           </p>
                         ) : null}
                         <button
                           type="button"
-                          className="inline-flex shrink-0 items-center gap-2 rounded-full bg-transparent px-3 py-2 text-[22px] font-medium text-red-800 transition-colors hover:bg-red-50 disabled:opacity-50"
+                          className="inline-flex shrink-0 items-center gap-2 rounded-full bg-transparent px-3 py-2 text-[11px] font-medium text-red-800 transition-colors hover:bg-red-50 disabled:opacity-50"
                           disabled={deleting}
                           onClick={() => void handleDeletePost()}
                         >
                           <Trash2
-                            className="size-[26px] shrink-0"
+                            className="size-[13px] shrink-0"
                             strokeWidth={2}
                             aria-hidden
                           />
@@ -316,7 +316,7 @@ export function JoySpotDetailDialog({
 
                 {hasPhoto && caption ? (
                   <p
-                    className="m-0 mt-1.5 h-fit min-h-0 w-full min-w-0 text-[31px] font-normal leading-normal text-black"
+                    className="m-0 mt-1.5 h-fit min-h-0 w-full min-w-0 text-[16px] font-normal leading-normal text-black"
                     data-node-id="8126:555"
                   >
                     {caption}
@@ -362,7 +362,7 @@ export function JoySpotDetailDialog({
             {/* 8140:502 — location left, timestamp right, 24px */}
             {locationLine || timestampLine ? (
               <div
-                className="mt-4 flex w-full shrink-0 items-start justify-between gap-4 text-[24px] font-normal leading-normal text-black"
+                className="mt-4 flex w-full shrink-0 items-start justify-between gap-4 text-[12px] font-normal leading-normal text-black"
                 data-node-id={hasPhoto ? "8140:502" : "8141:515"}
               >
                 <div className="min-w-0 flex-1">
