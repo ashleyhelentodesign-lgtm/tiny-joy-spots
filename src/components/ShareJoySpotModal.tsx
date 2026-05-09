@@ -122,7 +122,7 @@ export function ShareJoySpotModal({
                   Share another joy
                 </button>
                 <Link
-                  href="/gallery"
+                  href="/"
                   className="inline-flex items-center justify-center rounded-full bg-[#C17B5A] px-6 py-3 text-[8px] font-medium text-white transition-colors hover:bg-[#b06d4e]"
                   onClick={() => onOpenChange(false)}
                 >

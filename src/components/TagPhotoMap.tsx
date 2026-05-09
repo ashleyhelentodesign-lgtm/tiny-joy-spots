@@ -528,7 +528,7 @@ export function TagPhotoMap({ spots }: { spots: GallerySpot[] }) {
           <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8 text-center text-[#8C7B6E]">
             <p>No joy spots yet. Share one from the gallery.</p>
             <Link
-              href="/gallery"
+              href="/"
               className="rounded-full bg-[#C17B5A] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#b06d4e]"
             >
               Go to gallery
