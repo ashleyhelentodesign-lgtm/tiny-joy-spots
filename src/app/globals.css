@@ -1,3 +1,4 @@
+@import url("https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@1,2,3,4,5,6,7,8,9&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -7,9 +8,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  /* Fontshare serves the variable font as family name "Cabinet Grotesk" (weights 100–900). */
+  --font-sans: "Cabinet Grotesk", "Cabinet Grotesk Variable", ui-sans-serif,
+    system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: "Cabinet Grotesk", "Cabinet Grotesk Variable", ui-sans-serif,
+    system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -122,9 +126,58 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-foreground;
   }
   html {
     @apply font-sans;
+    scrollbar-gutter: stable; /* reserve space so layout doesn’t shift when scrollbars appear */
+    scrollbar-width: thin;
+    scrollbar-color: #a89b8f #f0ebe4;
+  }
+
+  html::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  html::-webkit-scrollbar-track {
+    background: #f0ebe4;
+    border-radius: 8px;
+  }
+
+  html::-webkit-scrollbar-thumb {
+    background: #a89b8f;
+    border-radius: 8px;
+    min-height: 2.5rem;
+  }
+  input,
+  textarea,
+  select,
+  button {
+    font-family: inherit;
+  }
+}
+
+/* Scroll regions: persistent scrollbar (not overlay-only) while typing in nested inputs. */
+@layer utilities {
+  .joy-scroll-persistent {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #a89b8f #f0ebe4;
+  }
+
+  .joy-scroll-persistent::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .joy-scroll-persistent::-webkit-scrollbar-track {
+    background: #f0ebe4;
+    border-radius: 8px;
+  }
+
+  .joy-scroll-persistent::-webkit-scrollbar-thumb {
+    background: #a89b8f;
+    border-radius: 8px;
+    min-height: 2.5rem;
   }
 }
