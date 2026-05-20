@@ -1,3 +1,5 @@
+import { ProfileInvitationCta } from "@/components/ProfileInvitationCta";
+
 function InstagramIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -62,6 +64,7 @@ export function SiteFooter() {
           <p className="m-0 text-[clamp(2.025rem,4.5vw,2.475rem)] font-bold leading-tight text-black">
             tiny joy spots
           </p>
+          <ProfileInvitationCta />
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
             <div className="flex min-w-0 flex-wrap items-center gap-6">
               <span className="text-[14px] font-normal leading-snug text-black sm:text-[14.4px]">

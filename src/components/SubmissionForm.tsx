@@ -12,7 +12,9 @@ import {
 
 import { LocationPicker } from "@/components/LocationPicker";
 import { PhotoUploadDropzone } from "@/components/photo-upload-dropzone";
+import { extractDominantColorFromImageFile } from "@/lib/dominant-color";
 import { createClient } from "@/lib/supabase/client";
+import type { Profile } from "@/lib/profile";
 import { cn } from "@/lib/utils";
 
 type TagRow = { id: string; name: string };
@@ -81,6 +83,8 @@ export function SubmissionForm({
   const [spotDate, setSpotDate] = useState(() => todayISODate());
   const [locationText, setLocationText] = useState("");
   const [contributorName, setContributorName] = useState("");
+  const [viewerProfile, setViewerProfile] = useState<Profile | null>(null);
+  const [postAnonymously, setPostAnonymously] = useState(false);
   const [allTags, setAllTags] = useState<TagRow[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [selectedTags, setSelectedTags] = useState<SelectedTag[]>([]);
@@ -96,6 +100,24 @@ export function SubmissionForm({
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [formSuccess, setFormSuccess] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/profile", { credentials: "include" });
+        const payload = (await res.json()) as { profile?: Profile | null };
+        if (!cancelled) {
+          setViewerProfile(payload.profile ?? null);
+        }
+      } catch {
+        if (!cancelled) setViewerProfile(null);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const refreshKnownMoods = useCallback(async () => {
     const supabase = createClient();
@@ -270,11 +292,17 @@ export function SubmissionForm({
       const formData = new FormData();
       if (file) {
         formData.append("photo", file);
+        const dominantColor = await extractDominantColorFromImageFile(file);
+        if (dominantColor) {
+          formData.append("dominant_color", dominantColor);
+        }
       }
       formData.append("text_content", bodyText.trim());
       formData.append("date", spotDate);
       formData.append("location_text", locationText.trim());
-      if (contributorName.trim()) {
+      if (viewerProfile && !postAnonymously) {
+        formData.append("contributor_name", viewerProfile.display_name);
+      } else if (!viewerProfile && contributorName.trim()) {
         formData.append("contributor_name", contributorName.trim());
       }
       if (caption.trim()) {
@@ -320,6 +348,7 @@ export function SubmissionForm({
       setSpotDate(todayISODate());
       setLocationText("");
       setContributorName("");
+      setPostAnonymously(false);
       setSelectedTags([]);
       setTagInput("");
       setMood(null);
@@ -611,21 +640,41 @@ export function SubmissionForm({
         </div>
       </div>
 
-      <div>
-        <label htmlFor={`${baseId}-name`} className={fieldLabel}>
-          Your name{" "}
-          <span className="font-normal text-[#8C7B6E]/80">(optional)</span>
-        </label>
-        <input
-          id={`${baseId}-name`}
-          type="text"
-          value={contributorName}
-          onChange={(e) => setContributorName(e.target.value)}
-          placeholder="i.e. Jane Doe"
-          autoComplete="name"
-          className={fieldInput}
-        />
-      </div>
+      {viewerProfile ? (
+        <div className="rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] px-4 py-4">
+          <p className="text-[calc(0.95rem_+_4pt)] leading-relaxed text-[#3d3530]">
+            This spot will show as{" "}
+            <span className="font-medium">{viewerProfile.display_name}</span>
+          </p>
+          <label className="mt-3 flex cursor-pointer items-start gap-3 text-left">
+            <input
+              type="checkbox"
+              checked={postAnonymously}
+              onChange={(e) => setPostAnonymously(e.target.checked)}
+              className="mt-1 size-4 shrink-0 rounded border-[#d4ccc2] text-[#C17B5A] focus:ring-[#C17B5A]/30"
+            />
+            <span className="text-[calc(0.875rem_+_4pt)] leading-snug text-[#6d625a]">
+              Post this one without my name — keep it anonymous
+            </span>
+          </label>
+        </div>
+      ) : (
+        <div>
+          <label htmlFor={`${baseId}-name`} className={fieldLabel}>
+            Your name{" "}
+            <span className="font-normal text-[#8C7B6E]/80">(optional)</span>
+          </label>
+          <input
+            id={`${baseId}-name`}
+            type="text"
+            value={contributorName}
+            onChange={(e) => setContributorName(e.target.value)}
+            placeholder="i.e. Jane Doe"
+            autoComplete="name"
+            className={fieldInput}
+          />
+        </div>
+      )}
     </>
   );
 

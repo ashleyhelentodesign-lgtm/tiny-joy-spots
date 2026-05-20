@@ -183,3 +183,150 @@
     min-height: 2.5rem;
   }
 }
+
+/* Profile create: soft diffused Joy Color aura (palette blooms + faint ripples). */
+@keyframes joy-color-aura-drift {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.88;
+  }
+  25% {
+    transform: translate(calc(-50% + 16%), calc(-50% - 12%)) scale(1.14);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(calc(-50% - 14%), calc(-50% + 10%)) scale(1.06);
+    opacity: 0.92;
+  }
+  75% {
+    transform: translate(calc(-50% + 10%), calc(-50% + 14%)) scale(1.12);
+    opacity: 0.96;
+  }
+}
+
+@keyframes joy-color-aura-drift-alt {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+  }
+  33% {
+    transform: translate(calc(-50% - 15%), calc(-50% - 8%)) scale(1.16);
+    opacity: 1;
+  }
+  66% {
+    transform: translate(calc(-50% + 12%), calc(-50% + 12%)) scale(1.04);
+    opacity: 0.9;
+  }
+}
+
+@keyframes joy-color-aura-drift-warm {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 0.82;
+  }
+  40% {
+    transform: translate(calc(-50% + 8%), calc(-50% - 14%)) scale(1.1);
+    opacity: 0.98;
+  }
+  80% {
+    transform: translate(calc(-50% - 10%), calc(-50% + 6%)) scale(1.18);
+    opacity: 1;
+  }
+}
+
+.joy-color-aura {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.joy-color-aura__bloom {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 78%;
+  height: 78%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(11px);
+  will-change: transform, opacity;
+}
+
+.joy-color-aura__bloom--sage {
+  background: radial-gradient(
+    circle at 58% 48%,
+    #7a9e87 0%,
+    rgb(122 158 135 / 78%) 32%,
+    rgb(122 158 135 / 35%) 52%,
+    transparent 76%
+  );
+  animation: joy-color-aura-drift 5.5s ease-in-out infinite;
+}
+
+.joy-color-aura__bloom--rose {
+  width: 72%;
+  height: 72%;
+  background: radial-gradient(
+    circle at 38% 42%,
+    #c17b5a 0%,
+    rgb(193 123 90 / 72%) 34%,
+    rgb(176 109 78 / 38%) 54%,
+    transparent 74%
+  );
+  animation: joy-color-aura-drift-alt 6.5s ease-in-out infinite;
+}
+
+.joy-color-aura__bloom--warm {
+  width: 85%;
+  height: 85%;
+  background: radial-gradient(
+    circle at 50% 55%,
+    #b06d4e 0%,
+    rgb(163 74 56 / 55%) 36%,
+    rgb(137 124 112 / 28%) 56%,
+    transparent 76%
+  );
+  filter: blur(12px);
+  animation: joy-color-aura-drift-warm 7s ease-in-out infinite;
+}
+
+.joy-color-aura__ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgb(168 155 143 / 14%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.joy-color-aura__ripple--1 {
+  width: 86%;
+  height: 86%;
+}
+
+.joy-color-aura__ripple--2 {
+  width: 104%;
+  height: 104%;
+  border-color: rgb(168 155 143 / 10%);
+}
+
+.joy-color-aura__ripple--3 {
+  width: 122%;
+  height: 122%;
+  border-color: rgb(168 155 143 / 7%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .joy-color-aura__bloom {
+    animation: none;
+    opacity: 0.78;
+    transform: translate(-50%, -50%);
+  }
+}

@@ -7,3 +7,18 @@ export function normalizeJoySpotsDeviceId(
   const t = raw?.trim().toLowerCase();
   return t || null;
 }
+
+export function parseJoySpotsDeviceCookie(
+  cookieHeader: string,
+): string | null {
+  const parts = cookieHeader.split(";").map((p) => p.trim());
+  const prefix = `${JOY_SPOTS_DEVICE_COOKIE}=`;
+  for (const part of parts) {
+    if (part.startsWith(prefix)) {
+      return normalizeJoySpotsDeviceId(
+        decodeURIComponent(part.slice(prefix.length)),
+      );
+    }
+  }
+  return null;
+}

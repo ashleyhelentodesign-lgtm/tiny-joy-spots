@@ -84,7 +84,9 @@ async function resolveOrCreateTagId(
  * - `text_content` — body text (required if no photo)
  * - `date` — optional ISO date (YYYY-MM-DD), defaults to today
  * - `location_text` — optional
- * - `contributor_name` — optional; stored as null if blank
+ * - `contributor_name` — optional; null if blank (anonymous). When a device
+ *   profile exists, `profile_id` is set automatically and named posts use the
+ *   profile display name.
  * - `caption` — optional (if column exists)
  * - `mood` — optional single mood word (stored, not shown in gallery UI yet)
  *
@@ -144,10 +146,8 @@ export async function POST(request: Request) {
     typeof locRaw === "string" ? locRaw.trim() : "";
 
   const nameRaw = formData.get("contributor_name");
-  const contributor_name =
-    typeof nameRaw === "string" && nameRaw.trim()
-      ? nameRaw.trim()
-      : null;
+  const wantsNamedCredit =
+    typeof nameRaw === "string" && nameRaw.trim().length > 0;
 
   const capRaw = formData.get("caption");
   const caption =
@@ -183,6 +183,32 @@ export async function POST(request: Request) {
   const mood =
     typeof moodRaw === "string" && moodRaw.trim() ? moodRaw.trim() : null;
 
+  const { data: deviceProfile } = await supabase
+    .from("profiles")
+    .select("id, display_name")
+    .eq("device_id", deviceId)
+    .maybeSingle();
+
+  let profile_id: string | null = null;
+  let contributor_name: string | null = null;
+
+  if (deviceProfile?.id) {
+    profile_id = deviceProfile.id as string;
+    if (wantsNamedCredit) {
+      const fromProfile =
+        typeof deviceProfile.display_name === "string"
+          ? deviceProfile.display_name.trim()
+          : "";
+      contributor_name =
+        fromProfile ||
+        (typeof nameRaw === "string" ? nameRaw.trim() : null) ||
+        null;
+    }
+  } else if (wantsNamedCredit) {
+    contributor_name =
+      typeof nameRaw === "string" ? nameRaw.trim() : null;
+  }
+
   const insertPayload: Record<string, unknown> = {
     photo_url,
     text_content,
@@ -191,11 +217,22 @@ export async function POST(request: Request) {
     contributor_name,
     device_id: deviceId,
   };
+  if (profile_id) {
+    insertPayload.profile_id = profile_id;
+  }
   if (caption !== null) {
     insertPayload.caption = caption;
   }
   if (mood !== null) {
     insertPayload.mood = mood;
+  }
+
+  const dominantRaw = formData.get("dominant_color");
+  if (hasPhoto && typeof dominantRaw === "string") {
+    const trimmed = dominantRaw.trim();
+    if (/^#[0-9A-Fa-f]{6}$/.test(trimmed)) {
+      insertPayload.dominant_color = trimmed.toLowerCase();
+    }
   }
 
   const { data: spot, error: insertError } = await supabase

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 
 import { ExplorerSearchBar } from "@/components/ExplorerSearchBar";
 import { JoySpotDetailDialog } from "@/components/JoySpotDetailDialog";
@@ -20,6 +20,8 @@ export type GallerySpot = {
   photo_url: string | null;
   text_content: string;
   contributor_name: string | null;
+  /** Set when the spot was linked to a device profile at submit time. */
+  profile_id?: string | null;
   caption: string | null;
   location_text: string;
   date: string;
@@ -27,11 +29,18 @@ export type GallerySpot = {
   tags: GalleryTag[];
   /** True when this browser’s joy_spots_device_id cookie matches the row’s device_id. */
   viewer_owns_spot: boolean;
+  /** Optional `#RRGGBB` from the submission image (profile joy color). */
+  dominant_color?: string | null;
 };
 
 type GalleryGridProps = {
   spots: GallerySpot[];
   className?: string;
+  /** When false, hides the explorer search bar (e.g. profile “My Spots”). */
+  showExplorerSearch?: boolean;
+  sectionAriaLabel?: string;
+  header?: ReactNode;
+  emptyState?: ReactNode;
 };
 
 /** Matches Tailwind `sm`/`md`/`lg`/`xl` widths for predictable layout + image hints. */
@@ -146,7 +155,14 @@ function GalleryPreviewBottom({
   );
 }
 
-export function GalleryGrid({ spots, className }: GalleryGridProps) {
+export function GalleryGrid({
+  spots,
+  className,
+  showExplorerSearch = true,
+  sectionAriaLabel = "Joy spots",
+  header,
+  emptyState,
+}: GalleryGridProps) {
   const router = useRouter();
   const columnCount = useGalleryColumnCount();
   const [explorerChips, setExplorerChips] = useState<ExplorerChip[]>([]);
@@ -186,21 +202,30 @@ export function GalleryGrid({ spots, className }: GalleryGridProps) {
         }}
       />
       <div className="w-full">
-        <ExplorerSearchBar
-          spots={spots}
-          chips={explorerChips}
-          onChipsChange={setExplorerChips}
-        />
+        {showExplorerSearch ? (
+          <ExplorerSearchBar
+            spots={spots}
+            chips={explorerChips}
+            onChipsChange={setExplorerChips}
+          />
+        ) : null}
+
+        {header}
 
         {filtered.length === 0 ? (
-          <p
-            className="py-16 text-center leading-relaxed text-[#3d3530]"
-            style={{ fontSize: "8px" }}
-          >
-            No joy spots match your search yet.
-          </p>
+          emptyState ?? (
+            <p
+              className="py-16 text-center leading-relaxed text-[#3d3530]"
+              style={{ fontSize: "8px" }}
+            >
+              No joy spots match your search yet.
+            </p>
+          )
         ) : (
-          <section className="flex w-full gap-6" aria-label="Joy spots">
+          <section
+            className="flex w-full gap-6"
+            aria-label={sectionAriaLabel}
+          >
             {columns.map((colSpots, colIndex) => (
               <div
                 key={colIndex}

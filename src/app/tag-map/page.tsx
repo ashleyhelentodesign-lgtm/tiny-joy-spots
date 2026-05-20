@@ -4,7 +4,10 @@ import { createClient } from "@supabase/supabase-js";
 
 import { TagPhotoMap } from "@/components/TagPhotoMap";
 import type { GallerySpot } from "@/components/GalleryGrid";
-import { mapRowsToGallerySpots } from "@/lib/map-rows-to-gallery-spots";
+import {
+  GALLERY_SPOT_PROFILE_SELECT,
+  mapRowsToGallerySpots,
+} from "@/lib/map-rows-to-gallery-spots";
 import { JOY_SPOTS_DEVICE_COOKIE } from "@/lib/joy-spots-device";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +42,7 @@ export default async function TagMapPage() {
         date,
         created_at,
         device_id,
+        ${GALLERY_SPOT_PROFILE_SELECT},
         joy_spot_tags (
           tags (
             id,
