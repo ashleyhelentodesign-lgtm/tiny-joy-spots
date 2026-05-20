@@ -109,7 +109,7 @@ export function ShareJoySpotModal({
             <div className="flex flex-1 flex-col justify-center px-6 pb-10 pt-12 text-center sm:pt-14">
               <h2
                 id={thanksTitleId}
-                className="font-serif text-[1.75rem] font-normal italic leading-tight tracking-tight text-[#2e2824] sm:text-[2rem]"
+                className="font-serif text-[clamp(calc(1.75rem_+_4pt),calc(1.75vw_+_4pt),calc(2.75rem_+_4pt))] font-normal italic leading-tight tracking-tight text-[#2e2824]"
               >
                 Thank you for sharing a joy
               </h2>
@@ -117,13 +117,15 @@ export function ShareJoySpotModal({
                 <button
                   type="button"
                   onClick={shareAnother}
-                  className="rounded-full border border-[#C17B5A] bg-transparent px-6 py-3 text-[8px] font-medium text-[#C17B5A] transition-colors hover:bg-[#C17B5A]/10"
+                  className="rounded-full border border-[#C17B5A] bg-transparent px-7 py-4 font-medium leading-snug text-[#C17B5A] transition-colors hover:bg-[#C17B5A]/10 sm:px-8"
+                  style={{ fontSize: "14px" }}
                 >
                   Share another joy
                 </button>
                 <Link
                   href="/"
-                  className="inline-flex items-center justify-center rounded-full bg-[#C17B5A] px-6 py-3 text-[8px] font-medium text-white transition-colors hover:bg-[#b06d4e]"
+                  className="inline-flex items-center justify-center rounded-full bg-[#C17B5A] px-7 py-4 font-medium leading-snug text-white transition-colors hover:bg-[#b06d4e] sm:px-8"
+                  style={{ fontSize: "14px" }}
                   onClick={() => onOpenChange(false)}
                 >
                   Explore joy spots

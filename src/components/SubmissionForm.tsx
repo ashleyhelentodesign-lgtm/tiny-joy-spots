@@ -377,7 +377,7 @@ export function SubmissionForm({
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 sm:gap-5 sm:items-start">
-        <div className="relative min-w-0">
+        <div className="min-w-0">
           <span className={fieldLabel}>Tags</span>
           <p
             className={cn(
@@ -387,56 +387,38 @@ export function SubmissionForm({
           >
             As you type, pick an existing tag or add a new one.
           </p>
-          {selectedTags.length > 0 && (
-            <ul className={cn("mb-2 flex flex-wrap gap-2", !isModal && "mb-3")}>
-              {selectedTags.map((t) => (
-                <li key={t.name}>
-                  <button
-                    type="button"
-                    onClick={() => removeTag(t.name)}
-                    className={selectedTagPillClass}
-                  >
-                    <span className="min-w-0 truncate">{t.name}</span>
-                    <span className="sr-only">Remove</span>
-                    <span className="shrink-0 text-[#f5f5f5]/90" aria-hidden>
-                      ×
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <input
-            id={`${baseId}-tags`}
-            type="text"
-            value={tagInput}
-            onChange={(e) => {
-              setTagInput(e.target.value);
-              setSuggestOpen(true);
-            }}
-            onFocus={() => {
-              cancelBlurClose();
-              setSuggestOpen(true);
-            }}
-            onBlur={scheduleBlurClose}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addTag(tagInput);
-              }
-            }}
-            placeholder="Choose or type your tags."
-            autoComplete="off"
-            className={fieldInput}
-          />
-          {suggestOpen &&
-            (filteredSuggestions.length > 0 || normalizeTagName(tagInput)) && (
-              <ul
-                className={cn(
-                  "absolute z-20 mt-2 w-full overflow-y-auto rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] py-1 shadow-lg",
-                  SUGGEST_LIST_MAX_H,
-                )}
-              >
+          <div className="relative min-w-0">
+            <input
+              id={`${baseId}-tags`}
+              type="text"
+              value={tagInput}
+              onChange={(e) => {
+                setTagInput(e.target.value);
+                setSuggestOpen(true);
+              }}
+              onFocus={() => {
+                cancelBlurClose();
+                setSuggestOpen(true);
+              }}
+              onBlur={scheduleBlurClose}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addTag(tagInput);
+                }
+              }}
+              placeholder="Choose or type your tags."
+              autoComplete="off"
+              className={fieldInput}
+            />
+            {suggestOpen &&
+              (filteredSuggestions.length > 0 || normalizeTagName(tagInput)) && (
+                <ul
+                  className={cn(
+                    "absolute left-0 top-full z-20 mt-2 w-full overflow-y-auto rounded-2xl border border-[#e3d9ce] bg-[#FFFCF7] py-1 shadow-lg",
+                    SUGGEST_LIST_MAX_H,
+                  )}
+                >
                 {normalizeTagName(tagInput) &&
                   !allTags.some(
                     (t) =>
@@ -475,8 +457,33 @@ export function SubmissionForm({
                     </button>
                   </li>
                 ))}
-              </ul>
-            )}
+                </ul>
+              )}
+          </div>
+          {selectedTags.length > 0 && (
+            <ul
+              className={cn(
+                "mt-2 flex flex-wrap gap-2",
+                !isModal && "mt-3",
+              )}
+            >
+              {selectedTags.map((t) => (
+                <li key={t.name}>
+                  <button
+                    type="button"
+                    onClick={() => removeTag(t.name)}
+                    className={selectedTagPillClass}
+                  >
+                    <span className="min-w-0 truncate">{t.name}</span>
+                    <span className="sr-only">Remove</span>
+                    <span className="shrink-0 text-[#f5f5f5]/90" aria-hidden>
+                      ×
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className="relative min-w-0">
