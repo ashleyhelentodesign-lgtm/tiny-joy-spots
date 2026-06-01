@@ -19,6 +19,7 @@ export function ProfileMySpotsSection({ spots }: ProfileMySpotsSectionProps) {
       <ShareJoySpotModal open={shareOpen} onOpenChange={setShareOpen} />
       <GalleryGrid
         spots={spots}
+        className="pb-0"
         showExplorerSearch={false}
         sectionAriaLabel="Your joy spots"
         header={

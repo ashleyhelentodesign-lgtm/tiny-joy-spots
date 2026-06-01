@@ -36,4 +36,6 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## Additional Comments
-This is a test
+5/12 – adjusted the tags of "Tags" question to move under the input so they don't become misaligned.
+5/19 – adjusted the success page to the right font sizes. 
+5/19 - Added in the ability to save a name and to the computer ID. The avatar color is dominante color in the joyspots that have been uploaded. Ability to go back to the main gallery. Added an entry point from the gallery mode. 

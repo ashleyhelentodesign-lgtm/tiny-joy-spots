@@ -42,6 +42,60 @@ export function pickMostCommonDominantColor(
   return winner![0];
 }
 
+/** Up to `limit` most frequent dominant colors (ties broken by newest spot). */
+export function pickTopDominantColors(
+  spots: Array<{ dominant_color?: string | null; created_at?: string }>,
+  limit = 5,
+): string[] {
+  const tallies = new Map<string, { count: number; latest: string }>();
+
+  for (const spot of spots) {
+    const hex = normalizeDominantHex(spot.dominant_color);
+    if (!hex) continue;
+    const prev = tallies.get(hex) ?? { count: 0, latest: "" };
+    prev.count += 1;
+    const created = spot.created_at ?? "";
+    if (created > prev.latest) prev.latest = created;
+    tallies.set(hex, prev);
+  }
+
+  return [...tallies.entries()]
+    .sort(([, a], [, b]) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return b.latest.localeCompare(a.latest);
+    })
+    .slice(0, limit)
+    .map(([hex]) => hex);
+}
+
+export type DominantColorCount = { hex: string; count: number };
+
+/** Top dominant colors with occurrence counts (ties broken by newest spot). */
+export function pickTopDominantColorsWithCounts(
+  spots: Array<{ dominant_color?: string | null; created_at?: string }>,
+  limit = 5,
+): DominantColorCount[] {
+  const tallies = new Map<string, { count: number; latest: string }>();
+
+  for (const spot of spots) {
+    const hex = normalizeDominantHex(spot.dominant_color);
+    if (!hex) continue;
+    const prev = tallies.get(hex) ?? { count: 0, latest: "" };
+    prev.count += 1;
+    const created = spot.created_at ?? "";
+    if (created > prev.latest) prev.latest = created;
+    tallies.set(hex, prev);
+  }
+
+  return [...tallies.entries()]
+    .sort(([, a], [, b]) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return b.latest.localeCompare(a.latest);
+    })
+    .slice(0, limit)
+    .map(([hex, { count }]) => ({ hex, count }));
+}
+
 /** Sample an uploaded image in the browser and return a `#RRGGBB` dominant color. */
 export async function extractDominantColorFromImageFile(
   file: File,

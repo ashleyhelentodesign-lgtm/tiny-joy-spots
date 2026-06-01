@@ -31,6 +31,7 @@ export type GallerySpot = {
   viewer_owns_spot: boolean;
   /** Optional `#RRGGBB` from the submission image (profile joy color). */
   dominant_color?: string | null;
+  mood?: string | null;
 };
 
 type GalleryGridProps = {

@@ -60,6 +60,7 @@ export function mapRowsToGallerySpots(
       tags,
       viewer_owns_spot: Boolean(viewer && rowDevice && viewer === rowDevice),
       dominant_color: (r.dominant_color as string | null) ?? null,
+      mood: (r.mood as string | null) ?? null,
     };
   });
 }

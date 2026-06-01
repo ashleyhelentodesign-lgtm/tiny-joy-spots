@@ -18,6 +18,7 @@ const JOY_SPOTS_BY_DEVICE_SELECT = `
   created_at,
   device_id,
   dominant_color,
+  mood,
   ${GALLERY_SPOT_PROFILE_SELECT.trim()},
   joy_spot_tags (
     tags (
