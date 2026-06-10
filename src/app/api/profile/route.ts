@@ -7,6 +7,7 @@ import {
   normalizeProfileDisplayName,
   validateProfileInsert,
 } from "@/lib/profile";
+import { recomputeUserColorProfile } from "@/lib/user-color-profile";
 import {
   JOY_SPOTS_DEVICE_COOKIE,
   parseJoySpotsDeviceCookie,
@@ -142,6 +143,14 @@ export async function POST(request: Request) {
     const message = error?.message ?? "Could not save your profile.";
     const status = error?.code === "23505" ? 409 : 400;
     return NextResponse.json({ error: message }, { status });
+  }
+
+  try {
+    await recomputeUserColorProfile(supabase, deviceId);
+  } catch (recomputeError) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("[Profile color] initial recompute failed", recomputeError);
+    }
   }
 
   const response = NextResponse.json({

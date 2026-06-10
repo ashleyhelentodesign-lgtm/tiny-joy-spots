@@ -1,4 +1,5 @@
 import type { GallerySpot } from "@/components/GalleryGrid";
+import { normalizeExtractedColors } from "@/lib/dominant-color";
 import { normalizeJoySpotsDeviceId } from "@/lib/joy-spots-device";
 import {
   parseJoySpotProfileRef,
@@ -59,6 +60,7 @@ export function mapRowsToGallerySpots(
       created_at: String(r.created_at ?? ""),
       tags,
       viewer_owns_spot: Boolean(viewer && rowDevice && viewer === rowDevice),
+      extracted_colors: normalizeExtractedColors(r.extracted_colors),
       dominant_color: (r.dominant_color as string | null) ?? null,
       mood: (r.mood as string | null) ?? null,
     };

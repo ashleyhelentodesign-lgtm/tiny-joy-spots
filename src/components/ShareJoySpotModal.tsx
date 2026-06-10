@@ -14,11 +14,14 @@ import { SubmissionForm } from "@/components/SubmissionForm";
 type ShareJoySpotModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Called when a spot is successfully submitted (before the thanks screen). */
+  onSubmitted?: () => void;
 };
 
 export function ShareJoySpotModal({
   open,
   onOpenChange,
+  onSubmitted,
 }: ShareJoySpotModalProps) {
   const [phase, setPhase] = useState<"form" | "thanks">("form");
   const [formResetKey, setFormResetKey] = useState(0);
@@ -102,7 +105,7 @@ export function ShareJoySpotModal({
                 variant="modal"
                 headingId={formTitleId}
                 subtitle=""
-                onSubmitted={() => setPhase("thanks")}
+                onSubmitted={() => { onSubmitted?.(); setPhase("thanks"); }}
               />
             </div>
           ) : (

@@ -13,6 +13,7 @@ import {
   JOY_SPOTS_DEVICE_COOKIE,
   normalizeJoySpotsDeviceId,
 } from "@/lib/joy-spots-device";
+import { getUserColorProfileForDevice } from "@/lib/profile-color-server";
 import { getProfileForDevice } from "@/lib/profile-server";
 
 export const metadata: Metadata = {
@@ -35,12 +36,14 @@ export default async function ProfilePage() {
   const avatarColor =
     topColorPalette[0]?.hex ??
     pickMostCommonDominantColor(mySpots, profile.avatar_color);
+  const userColorProfile = await getUserColorProfileForDevice(deviceId);
 
   return (
     <ProfilePageClient
       profile={profile}
       avatarColor={avatarColor}
       spots={mySpots}
+      userColorProfile={userColorProfile}
       mySpotsSection={
         <>
           <h2

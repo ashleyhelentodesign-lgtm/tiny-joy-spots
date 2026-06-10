@@ -243,24 +243,14 @@ function tallyTagsOnly(
 ): { label: string; count: number }[] {
   const counts = new Map<string, { label: string; count: number }>();
 
-  const add = (raw: string) => {
-    const label = raw.trim();
-    if (!label) return;
-    const key = label.toLowerCase();
-    const prev = counts.get(key);
-    if (prev) prev.count += 1;
-    else counts.set(key, { label, count: 1 });
-  };
-
   for (const spot of spots) {
-    if (spot.mood?.trim()) add(spot.mood.trim());
-    for (const tag of spot.tags) add(tag.name);
-    const body = [spot.caption, spot.text_content]
-      .filter(Boolean)
-      .join(" ");
-    for (const token of tokenize(body)) {
-      if (STOP_WORDS.has(token) || token.length < 3) continue;
-      add(token);
+    for (const tag of spot.tags) {
+      const label = tag.name.trim();
+      if (!label) continue;
+      const key = label.toLowerCase();
+      const prev = counts.get(key);
+      if (prev) prev.count += 1;
+      else counts.set(key, { label, count: 1 });
     }
   }
 

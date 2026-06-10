@@ -35,6 +35,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+**Last modified:** 2026-06-01
+
 ## Additional Comments
 5/12 – adjusted the tags of "Tags" question to move under the input so they don't become misaligned.
 5/19 – adjusted the success page to the right font sizes. 

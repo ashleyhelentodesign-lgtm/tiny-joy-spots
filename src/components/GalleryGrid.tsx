@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 
+import type { ExtractedColor } from "@/lib/dominant-color";
 import { ExplorerSearchBar } from "@/components/ExplorerSearchBar";
 import { JoySpotDetailDialog } from "@/components/JoySpotDetailDialog";
 import {
@@ -31,6 +32,8 @@ export type GallerySpot = {
   viewer_owns_spot: boolean;
   /** Optional `#RRGGBB` from the submission image (profile joy color). */
   dominant_color?: string | null;
+  /** Weighted top colors extracted from the submission image. */
+  extracted_colors?: ExtractedColor[] | null;
   mood?: string | null;
 };
 

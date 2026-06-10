@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { GalleryGrid, type GallerySpot } from "@/components/GalleryGrid";
@@ -11,12 +12,17 @@ type ProfileMySpotsSectionProps = {
 };
 
 export function ProfileMySpotsSection({ spots }: ProfileMySpotsSectionProps) {
+  const router = useRouter();
   const [shareOpen, setShareOpen] = useState(false);
   const count = spots.length;
 
   return (
     <>
-      <ShareJoySpotModal open={shareOpen} onOpenChange={setShareOpen} />
+      <ShareJoySpotModal
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        onSubmitted={() => router.refresh()}
+      />
       <GalleryGrid
         spots={spots}
         className="pb-0"

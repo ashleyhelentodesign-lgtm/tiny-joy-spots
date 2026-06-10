@@ -12,7 +12,7 @@ import {
 
 import { LocationPicker } from "@/components/LocationPicker";
 import { PhotoUploadDropzone } from "@/components/photo-upload-dropzone";
-import { extractDominantColorFromImageFile } from "@/lib/dominant-color";
+import { extractDominantColorsFromImageFile } from "@/lib/dominant-color";
 import { createClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/profile";
 import { cn } from "@/lib/utils";
@@ -292,9 +292,9 @@ export function SubmissionForm({
       const formData = new FormData();
       if (file) {
         formData.append("photo", file);
-        const dominantColor = await extractDominantColorFromImageFile(file);
-        if (dominantColor) {
-          formData.append("dominant_color", dominantColor);
+        const extractedColors = await extractDominantColorsFromImageFile(file);
+        if (extractedColors.length > 0) {
+          formData.append("extracted_colors", JSON.stringify(extractedColors));
         }
       }
       formData.append("text_content", bodyText.trim());

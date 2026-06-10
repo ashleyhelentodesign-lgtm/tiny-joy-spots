@@ -50,7 +50,7 @@ export function ProfileHeaderSection({
         ) : null}
       </div>
 
-      <div className="mt-[113px] flex justify-center">
+      <div className="mt-[57px] flex justify-center">
         <ProfileNavTabs
           active={activeTab}
           spotCount={spotCount}

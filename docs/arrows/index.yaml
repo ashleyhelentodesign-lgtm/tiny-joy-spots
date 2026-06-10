@@ -1,0 +1,93 @@
+schema_version: 2
+last_updated: 2026-06-01
+
+# Taxonomy — organizational grouping only
+taxonomy:
+  posting:
+    - share-a-spot
+  viewing:
+    - browse-spots
+    - explore-by-tag
+  personal:
+    - claim-identity
+    - know-yourself
+    - joy-color
+
+arrows:
+  share-a-spot:
+    status: MAPPED
+    parent: null
+    sampled: 2026-06-01
+    audited: null
+    audited_sha: null
+    blocks: []
+    blockedBy: []
+    detail: share-a-spot.md
+    next: "Flesh out design doc — confirm whether lat/lng should be stored; decide on tag length validation"
+    drift: null
+
+  browse-spots:
+    status: MAPPED
+    parent: null
+    sampled: 2026-06-01
+    audited: null
+    audited_sha: null
+    blocks: []
+    blockedBy: []
+    detail: browse-spots.md
+    next: "Flesh out design doc — decide on JoyFloatingNav removal and pagination approach"
+    drift: "JoyFloatingNav rendered but fully disabled (both feature flags false)"
+
+  explore-by-tag:
+    status: MAPPED
+    parent: null
+    sampled: 2026-06-01
+    audited: null
+    audited_sha: null
+    blocks: []
+    blockedBy: []
+    detail: explore-by-tag.md
+    next: "Flesh out design doc — decide whether to re-expose tag-map in nav or deprecate the route"
+    drift: "Tag-map route live and functional but unreachable via nav"
+
+  claim-identity:
+    status: MAPPED
+    parent: null
+    sampled: 2026-06-01
+    audited: null
+    audited_sha: null
+    blocks: []
+    blockedBy: []
+    detail: claim-identity.md
+    next: "Flesh out design doc — decide on profile update endpoint and duplicate fetch consolidation"
+    drift: null
+
+  know-yourself:
+    status: MAPPED
+    parent: null
+    sampled: 2026-06-01
+    audited: null
+    audited_sha: null
+    blocks: []
+    blockedBy:
+      - joy-color
+    detail: know-yourself.md
+    next: "Flesh out design doc — decide on ProfileJoyColorCircles fate and subject-matching fix"
+    drift: "ProfileJoyColorCircles exists but is not rendered; avatar color recomputed on every profile load rather than using DB value"
+
+  joy-color:
+    status: MAPPED
+    parent: null
+    sampled: 2026-06-01
+    audited: null
+    audited_sha: null
+    blocks:
+      - know-yourself
+    blockedBy: []
+    detail: joy-color.md
+    next: "Flesh out design doc — decide on async recompute and ProfileJoyColorCircles fate"
+    drift: null
+
+unmapped:
+  docs:
+    intent: []

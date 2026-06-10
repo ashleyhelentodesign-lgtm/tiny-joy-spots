@@ -19,6 +19,13 @@ export type JoySpot = {
   profile_id: string | null;
   mood?: string | null;
   dominant_color?: string | null;
+  extracted_colors?: Array<{
+    hex: string;
+    h: number;
+    s: number;
+    l: number;
+    weight: number;
+  }> | null;
 };
 
 /**

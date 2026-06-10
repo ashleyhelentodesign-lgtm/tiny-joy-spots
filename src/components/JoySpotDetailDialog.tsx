@@ -179,17 +179,22 @@ export function JoySpotDetailDialog({
         aria-label="Close"
         onClick={() => onOpenChange(false)}
       />
-      <div className="pointer-events-none fixed inset-0 flex items-center justify-center p-3 sm:p-6">
+      <div className="pointer-events-none fixed inset-0 overflow-y-auto">
+        <div className="flex min-h-full items-center justify-center p-6">
         <div
           className={cn(
-            "pointer-events-auto relative flex w-[35vw] max-w-[calc(100vw-2rem)] min-w-0 flex-col shadow-xl ring-1 ring-black/5",
+            "pointer-events-auto relative flex flex-col shadow-xl ring-1 ring-black/5",
             hasPhoto
-              ? "h-[calc(75dvh*1.1)] max-h-[calc(100dvh-2rem)] min-h-0 overflow-hidden"
-              : "max-h-[calc(100dvh-2rem)] overflow-hidden",
+              ? ""
+              : "w-[35vw] max-w-[calc(100vw-2rem)] min-w-0 max-h-[calc(100dvh-2rem)] overflow-hidden",
           )}
           style={{
             borderRadius: FIGMA_RADIUS,
             backgroundColor: FIGMA_CARD_BG,
+            ...(hasPhoto ? {
+              width: "fit-content",
+              maxWidth: "min(90vw, 1296px)",
+            } : {}),
           }}
           data-node-id={hasPhoto ? "8130:628" : "8141:504"}
           data-name="Post details in pop-up"
@@ -214,35 +219,32 @@ export function JoySpotDetailDialog({
             className={cn(
               "flex w-full flex-col",
               hasPhoto
-                ? "min-h-0 flex-1 overflow-hidden"
+                ? ""
                 : "max-h-[calc(100dvh-6rem)] shrink-0 overflow-y-auto overscroll-contain",
             )}
           >
             {hasPhoto ? (
               <div
-                className="flex min-h-0 w-full flex-1 basis-0 flex-col overflow-hidden"
-                style={{
-                  backgroundColor: FIGMA_CARD_BG,
-                  borderTopLeftRadius: FIGMA_RADIUS,
-                  borderTopRightRadius: FIGMA_RADIUS,
-                }}
-                data-node-id="8126:551"
+                className="flex shrink-0 items-center justify-center"
+                style={{ padding: 48 }}
               >
-                <div className="box-border flex h-full min-h-0 w-full flex-1 items-center justify-center">
-                  <div
-                    className="relative mx-12 mb-12 mt-24 min-h-32 w-[calc(100%-96px)] max-w-[calc(100%-96px)] shrink-0 overflow-hidden h-[calc(100%-9rem)] max-h-[calc(100%-9rem)]"
-                    style={{ borderRadius: FIGMA_RADIUS }}
-                  >
-                    <Image
-                      src={spot.photo_url!}
-                      alt={caption ? caption : "Joy spot photo"}
-                      fill
-                      className="object-contain"
-                      sizes="calc(35vw - 96px)"
-                      priority
-                    />
-                  </div>
-                </div>
+                <Image
+                  src={spot.photo_url!}
+                  alt={caption ? caption : "Joy spot photo"}
+                  width={0}
+                  height={0}
+                  unoptimized
+                  priority
+                  className="block"
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    maxWidth: "min(calc(90vw - 96px), 1200px)",
+                    maxHeight: "min(calc(80dvh - 96px), 1200px)",
+                    borderRadius: FIGMA_RADIUS,
+                  }}
+                  sizes="calc(90vw - 96px)"
+                />
               </div>
             ) : (
               <div
@@ -263,11 +265,12 @@ export function JoySpotDetailDialog({
 
             <div
               className={cn(
-                "flex w-full shrink-0 flex-col overscroll-contain px-9 pb-9 pt-3.5",
+                "flex w-full shrink-0 flex-col",
                 hasPhoto
-                  ? "max-h-[min(42dvh,48%)] min-h-0 overflow-y-auto"
-                  : "min-h-0",
+                  ? ""
+                  : "px-9 pb-9 pt-3.5 min-h-0",
               )}
+              style={hasPhoto ? { padding: "0 48px 48px" } : undefined}
               data-node-id={hasPhoto ? "8130:642" : "8141:506"}
             >
             {(contributorLine ||
@@ -387,6 +390,7 @@ export function JoySpotDetailDialog({
             ) : null}
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

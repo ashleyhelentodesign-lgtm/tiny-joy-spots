@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 
 import type { ProfilePortraitData } from "@/lib/profile-portrait-data";
+import type { UserColorProfile } from "@/lib/user-color-profile";
 
-import { ProfileJoyColorCircles } from "@/components/profile/ProfileJoyColorCircles";
+import { JoyAura } from "@/components/profile/JoyAura";
 
 type ProfileJoyPortraitViewProps = {
   data: ProfilePortraitData;
+  colorProfile: UserColorProfile | null;
+  submissionCount: number;
 };
 
 const sectionLabelClass =
@@ -29,8 +32,12 @@ function PortraitSection({
   );
 }
 
-export function ProfileJoyPortraitView({ data }: ProfileJoyPortraitViewProps) {
-  const { topColors, joyAuraSentence, whatDrawsYouIn, wordsOfJoy } = data;
+export function ProfileJoyPortraitView({
+  data,
+  colorProfile,
+  submissionCount,
+}: ProfileJoyPortraitViewProps) {
+  const { joyAuraSentence, whatDrawsYouIn, wordsOfJoy } = data;
 
   return (
     <div className="mx-auto flex w-full max-w-[1116px] justify-center">
@@ -78,14 +85,13 @@ export function ProfileJoyPortraitView({ data }: ProfileJoyPortraitViewProps) {
         </div>
 
         <div className="flex w-full min-w-0 max-w-[507.5px] flex-1 flex-col items-start gap-[72px] max-[900px]:max-w-full">
-          <div className="flex w-full flex-col items-start gap-[5px] text-left">
+          <div className="flex w-full flex-col items-start gap-[12px] text-left">
             <p className={sectionLabelClass}>The colors of your joy</p>
-            <p className={sectionBodyClass}>
-              These are the top 5 most frequent colors that appear in your
-              joys.
-            </p>
+            <JoyAura
+              colorProfile={colorProfile}
+              submissionCount={submissionCount}
+            />
           </div>
-          <ProfileJoyColorCircles colors={topColors} />
         </div>
       </div>
     </div>

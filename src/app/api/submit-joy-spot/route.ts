@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
+import { normalizeExtractedColors } from "@/lib/dominant-color";
 import { JOY_SPOTS_DEVICE_COOKIE } from "@/lib/joy-spots-device";
 import { JOY_SPOT_PHOTOS_BUCKET } from "@/lib/joy-spot-storage";
+import { recomputeUserColorProfile } from "@/lib/user-color-profile";
 
 function parseCookie(header: string, name: string): string | null {
   const parts = header.split(";").map((p) => p.trim());
@@ -227,11 +229,16 @@ export async function POST(request: Request) {
     insertPayload.mood = mood;
   }
 
-  const dominantRaw = formData.get("dominant_color");
-  if (hasPhoto && typeof dominantRaw === "string") {
-    const trimmed = dominantRaw.trim();
-    if (/^#[0-9A-Fa-f]{6}$/.test(trimmed)) {
-      insertPayload.dominant_color = trimmed.toLowerCase();
+  const extractedColorsRaw = formData.get("extracted_colors");
+  if (hasPhoto && typeof extractedColorsRaw === "string") {
+    try {
+      const parsed = JSON.parse(extractedColorsRaw) as unknown;
+      const extractedColors = normalizeExtractedColors(parsed);
+      if (extractedColors.length > 0) {
+        insertPayload.extracted_colors = extractedColors.slice(0, 3);
+      }
+    } catch {
+      /* keep submission silent on parse failure */
     }
   }
 
@@ -260,7 +267,18 @@ export async function POST(request: Request) {
     });
   }
 
-  const response = NextResponse.json(spot);
+  let colorRecomputeError: string | null = null;
+  try {
+    await recomputeUserColorProfile(supabase, deviceId);
+  } catch (err) {
+    colorRecomputeError = err instanceof Error ? err.message : String(err);
+    console.error("[Profile color] recompute failed:", colorRecomputeError);
+  }
+
+  const response = NextResponse.json({
+    ...(spot as Record<string, unknown>),
+    _colorRecomputeError: colorRecomputeError,
+  });
 
   if (issuedDeviceCookie) {
     response.cookies.set(JOY_SPOTS_DEVICE_COOKIE, deviceId, {
