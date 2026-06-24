@@ -38,8 +38,8 @@ export function ProfileMySpotsSection({ spots }: ProfileMySpotsSectionProps) {
         emptyState={
           <div className="mx-auto max-w-md py-12 text-center">
             <p className="text-[calc(1rem_+_4pt)] leading-relaxed text-[#5c4f45]">
-              You haven&apos;t shared a joy spot from this device yet — when you
-              do, they&apos;ll show up here.
+              You haven&apos;t shared a joy spot yet — when you do, they&apos;ll
+              show up here.
             </p>
             <button
               type="button"

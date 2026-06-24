@@ -19,6 +19,7 @@ export { GALLERY_SPOT_PROFILE_SELECT };
 export function mapRowsToGallerySpots(
   rows: unknown[],
   viewerDeviceId: string | null = null,
+  viewerUserId: string | null = null,
 ): GallerySpot[] {
   const viewer = normalizeJoySpotsDeviceId(viewerDeviceId);
   return rows.map((row) => {
@@ -26,6 +27,7 @@ export function mapRowsToGallerySpots(
     const rowDevice = normalizeJoySpotsDeviceId(
       r.device_id != null ? String(r.device_id) : null,
     );
+    const rowUserId = r.user_id != null ? String(r.user_id) : null;
     const profileId =
       r.profile_id != null ? String(r.profile_id) : null;
     const profile = parseJoySpotProfileRef(r);
@@ -59,7 +61,10 @@ export function mapRowsToGallerySpots(
       date: String(r.date ?? ""),
       created_at: String(r.created_at ?? ""),
       tags,
-      viewer_owns_spot: Boolean(viewer && rowDevice && viewer === rowDevice),
+      viewer_owns_spot: Boolean(
+        (viewerUserId && rowUserId && viewerUserId === rowUserId) ||
+          (!viewerUserId && viewer && rowDevice && viewer === rowDevice),
+      ),
       extracted_colors: normalizeExtractedColors(r.extracted_colors),
       dominant_color: (r.dominant_color as string | null) ?? null,
       mood: (r.mood as string | null) ?? null,

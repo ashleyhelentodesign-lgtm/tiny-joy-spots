@@ -6,28 +6,30 @@ import {
   USER_COLOR_PROFILE_TABLE,
   type UserColorProfile,
 } from "@/lib/user-color-profile";
-import { normalizeJoySpotsDeviceId } from "@/lib/joy-spots-device";
 
-export async function getUserColorProfileForDevice(
-  deviceId: string | null | undefined,
-): Promise<UserColorProfile | null> {
-  const normalized = normalizeJoySpotsDeviceId(deviceId);
-  if (!normalized) return null;
-
+function adminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key =
     process.env.SUPABASE_SERVICE_ROLE_KEY ??
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return null;
-
-  const supabase = createClient(url, key, {
+  return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+}
+
+export async function getUserColorProfileForUser(
+  userId: string | null | undefined,
+): Promise<UserColorProfile | null> {
+  if (!userId) return null;
+
+  const supabase = adminClient();
+  if (!supabase) return null;
 
   const { data, error } = await supabase
     .from(USER_COLOR_PROFILE_TABLE)
     .select(USER_COLOR_PROFILE_SELECT)
-    .eq("device_id", normalized)
+    .eq("user_id", userId)
     .maybeSingle();
 
   if (error || !data) return null;

@@ -9,6 +9,7 @@ import {
   mapRowsToGallerySpots,
 } from "@/lib/map-rows-to-gallery-spots";
 import { JOY_SPOTS_DEVICE_COOKIE } from "@/lib/joy-spots-device";
+import { createClient as createServerClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 import {
   GALLERY_SURFACE_CLASS,
@@ -24,11 +25,15 @@ export async function GalleryServerBody() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   let spots: GallerySpot[] = [];
-  let devFetchAlert: { message: string; details: string | null } | null =
-    null;
+  let devFetchAlert: { message: string; details: string | null } | null = null;
+
   const cookieStore = await cookies();
-  const viewerDeviceId =
-    cookieStore.get(JOY_SPOTS_DEVICE_COOKIE)?.value ?? null;
+  const viewerDeviceId = cookieStore.get(JOY_SPOTS_DEVICE_COOKIE)?.value ?? null;
+
+  // Prefer user_id for ownership when authenticated.
+  const serverSupabase = await createServerClient();
+  const { data: { user } } = await serverSupabase.auth.getUser();
+  const viewerUserId = user?.id ?? null;
 
   if (url && key) {
     const supabase = createClient(url, key);
@@ -45,6 +50,7 @@ export async function GalleryServerBody() {
         date,
         created_at,
         device_id,
+        user_id,
         ${GALLERY_SPOT_PROFILE_SELECT},
         joy_spot_tags (
           tags (
@@ -60,13 +66,11 @@ export async function GalleryServerBody() {
       logGalleryFetchError(error);
       devFetchAlert = formatGalleryFetchDevMessage(error);
     } else if (data) {
-      spots = mapRowsToGallerySpots(data as unknown[], viewerDeviceId);
+      spots = mapRowsToGallerySpots(data as unknown[], viewerDeviceId, viewerUserId);
     }
   } else {
     logGalleryFetchError(null, { configMissing: true });
-    devFetchAlert = formatGalleryFetchDevMessage(null, {
-      configMissing: true,
-    });
+    devFetchAlert = formatGalleryFetchDevMessage(null, { configMissing: true });
   }
 
   return (

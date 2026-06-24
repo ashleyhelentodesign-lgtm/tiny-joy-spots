@@ -241,7 +241,7 @@ export function ExplorerSearchBar({
   return (
     <div ref={rootRef} className={cn("relative w-full", className)}>
       <div className="mb-10 flex w-full flex-col gap-4 md:flex-row md:flex-wrap md:items-center">
-        <div className="relative min-w-0 shrink-0" style={{ width: "40%" }}>
+        <div className="relative w-full min-w-0 shrink-0 md:w-[40%]">
           <SearchIcon className="pointer-events-none absolute left-5 top-1/2 size-6 -translate-y-1/2 text-[#8a7d72]" />
           <input
             ref={inputRef}

@@ -4,22 +4,33 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ProfileCreateModal } from "@/components/ProfileCreateModal";
+import { createClient } from "@/lib/supabase/client";
 
-/** Legacy URL: opens the create-profile modal, then returns home when dismissed. */
 export default function ProfileNewPage() {
   const router = useRouter();
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    if (!open) {
-      router.replace("/");
-    }
-  }, [open, router]);
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        router.replace("/gallery");
+      } else {
+        setOpen(true);
+        setChecking(false);
+      }
+    });
+  }, [router]);
+
+  if (checking) return null;
 
   return (
     <ProfileCreateModal
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) router.replace("/gallery");
+      }}
     />
   );
 }

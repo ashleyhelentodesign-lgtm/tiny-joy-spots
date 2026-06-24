@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-import { normalizeJoySpotsDeviceId } from "@/lib/joy-spots-device";
 import { recomputeUserColorProfile } from "@/lib/user-color-profile";
 
 function isAuthorized(request: Request): boolean {
@@ -35,41 +34,38 @@ async function recomputeAllProfiles() {
 
   const { data: rows, error } = await supabase
     .from("joy_spots")
-    .select("device_id");
+    .select("user_id")
+    .not("user_id", "is", null);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  const deviceIds = [
+  const userIds = [
     ...new Set(
       (rows ?? [])
-        .map((row) =>
-          normalizeJoySpotsDeviceId(
-            String((row as { device_id?: string }).device_id ?? ""),
-          ),
-        )
-        .filter((id): id is string => Boolean(id)),
+        .map((row) => String((row as { user_id?: string }).user_id ?? ""))
+        .filter(Boolean),
     ),
   ];
 
   let processed = 0;
-  const failures: Array<{ device_id: string; error: string }> = [];
+  const failures: Array<{ user_id: string; error: string }> = [];
 
-  for (const deviceId of deviceIds) {
+  for (const userId of userIds) {
     try {
-      await recomputeUserColorProfile(supabase, deviceId);
+      await recomputeUserColorProfile(supabase, userId);
       processed += 1;
     } catch (err) {
       failures.push({
-        device_id: deviceId,
+        user_id: userId,
         error: err instanceof Error ? err.message : "Unknown error",
       });
     }
   }
 
   return NextResponse.json({
-    total_devices: deviceIds.length,
+    total_users: userIds.length,
     processed,
     failures,
   });

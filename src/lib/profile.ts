@@ -24,7 +24,8 @@ const HEX_COLOR_RE = /^#[0-9A-Fa-f]{6}$/;
 
 export type Profile = {
   id: string;
-  device_id: string;
+  user_id: string;
+  device_id: string | null;
   display_name: string;
   bio: string | null;
   avatar_color: string;
@@ -33,7 +34,6 @@ export type Profile = {
 
 /** Fields clients may supply when creating a profile. */
 export type ProfileInsert = {
-  device_id: string;
   display_name: string;
   bio?: string | null;
 };
@@ -82,18 +82,14 @@ export function validateProfileInsert(
     };
   }
 
-  const deviceId = input.device_id?.trim().toLowerCase();
-  if (!deviceId) {
-    return { ok: false, error: "Device id is required." };
-  }
-
   return { ok: true };
 }
 
 export function mapProfileRow(row: Record<string, unknown>): Profile {
   return {
     id: String(row.id ?? ""),
-    device_id: String(row.device_id ?? ""),
+    user_id: String(row.user_id ?? ""),
+    device_id: row.device_id != null ? String(row.device_id) : null,
     display_name: String(row.display_name ?? ""),
     bio: row.bio != null ? String(row.bio) : null,
     avatar_color: String(row.avatar_color ?? ""),

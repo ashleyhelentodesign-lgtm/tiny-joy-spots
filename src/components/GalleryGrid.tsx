@@ -107,7 +107,7 @@ function GalleryPreviewBottom({
 }: PreviewBottomProps) {
   return (
     <div
-      className={cn("flex flex-col px-4 pb-9 pt-3.5 font-sans", PREVIEW_META_GAP)}
+      className={cn("flex flex-col px-4 py-[16px] font-sans", PREVIEW_META_GAP)}
       data-node-id="8141:532"
     >
       <div

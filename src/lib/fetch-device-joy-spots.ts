@@ -5,9 +5,8 @@ import {
   GALLERY_SPOT_PROFILE_SELECT,
   mapRowsToGallerySpots,
 } from "@/lib/map-rows-to-gallery-spots";
-import { normalizeJoySpotsDeviceId } from "@/lib/joy-spots-device";
 
-const JOY_SPOTS_BY_DEVICE_SELECT = `
+const JOY_SPOTS_SELECT = `
   id,
   photo_url,
   text_content,
@@ -17,6 +16,7 @@ const JOY_SPOTS_BY_DEVICE_SELECT = `
   date,
   created_at,
   device_id,
+  user_id,
   dominant_color,
   extracted_colors,
   mood,
@@ -36,39 +36,37 @@ export function formatJoySpotsNoticedLine(count: number): string {
   return `You've noticed ${count} joy spots.`;
 }
 
-export async function fetchJoySpotsForDevice(
-  deviceId: string | null | undefined,
-): Promise<GallerySpot[]> {
-  const normalized = normalizeJoySpotsDeviceId(deviceId);
-  if (!normalized) return [];
-
+function adminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key =
     process.env.SUPABASE_SERVICE_ROLE_KEY ??
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) return [];
-
-  const supabase = createClient(url, key, {
+  if (!url || !key) return null;
+  return createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+}
+
+export async function fetchJoySpotsForUser(
+  userId: string | null | undefined,
+): Promise<GallerySpot[]> {
+  if (!userId) return [];
+
+  const supabase = adminClient();
+  if (!supabase) return [];
 
   const { data, error } = await supabase
     .from("joy_spots")
-    .select(JOY_SPOTS_BY_DEVICE_SELECT)
-    .eq("device_id", normalized)
+    .select(JOY_SPOTS_SELECT)
+    .eq("user_id", userId)
     .order("created_at", { ascending: false });
 
   if (error || !data) {
     if (process.env.NODE_ENV === "development" && error) {
-      console.error("[Profile] device joy_spots fetch failed:", {
-        message: error.message,
-        code: error.code,
-        details: error.details,
-        hint: error.hint,
-      });
+      console.error("[Profile] user joy_spots fetch failed:", error.message);
     }
     return [];
   }
 
-  return mapRowsToGallerySpots(data as unknown[], normalized);
+  return mapRowsToGallerySpots(data as unknown[], null, userId);
 }

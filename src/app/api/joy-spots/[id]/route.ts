@@ -9,6 +9,7 @@ import {
   JOY_SPOTS_DEVICE_COOKIE,
   normalizeJoySpotsDeviceId,
 } from "@/lib/joy-spots-device";
+import { createClient as createServerClient } from "@/lib/supabase/server";
 
 function parseCookie(header: string, name: string): string | null {
   const parts = header.split(";").map((p) => p.trim());
@@ -29,21 +30,8 @@ export async function DELETE(
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !serviceKey) {
     return NextResponse.json(
-      {
-        error:
-          "Server misconfigured: NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.",
-      },
+      { error: "Server misconfigured: missing env vars." },
       { status: 500 },
-    );
-  }
-
-  const viewer = normalizeJoySpotsDeviceId(
-    parseCookie(request.headers.get("cookie") ?? "", JOY_SPOTS_DEVICE_COOKIE),
-  );
-  if (!viewer) {
-    return NextResponse.json(
-      { error: "Missing device session; cannot verify post ownership." },
-      { status: 401 },
     );
   }
 
@@ -52,13 +40,31 @@ export async function DELETE(
     return NextResponse.json({ error: "Invalid id." }, { status: 400 });
   }
 
+  // Determine viewer identity: prefer authenticated user, fall back to device cookie.
+  const serverSupabase = await createServerClient();
+  const { data: { user: authUser } } = await serverSupabase.auth.getUser();
+  const viewerUserId = authUser?.id ?? null;
+
+  const viewerDeviceId = viewerUserId
+    ? null
+    : normalizeJoySpotsDeviceId(
+        parseCookie(request.headers.get("cookie") ?? "", JOY_SPOTS_DEVICE_COOKIE),
+      );
+
+  if (!viewerUserId && !viewerDeviceId) {
+    return NextResponse.json(
+      { error: "Missing session; cannot verify post ownership." },
+      { status: 401 },
+    );
+  }
+
   const supabase = createClient(url, serviceKey, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
   const { data: row, error: fetchErr } = await supabase
     .from("joy_spots")
-    .select("id, device_id, photo_url")
+    .select("id, device_id, user_id, photo_url")
     .eq("id", spotId)
     .maybeSingle();
 
@@ -69,11 +75,20 @@ export async function DELETE(
     return NextResponse.json({ error: "Joy spot not found." }, { status: 404 });
   }
 
-  const owner = normalizeJoySpotsDeviceId(
+  const rowUserId = row.user_id != null ? String(row.user_id) : null;
+  const rowDeviceId = normalizeJoySpotsDeviceId(
     row.device_id != null ? String(row.device_id) : null,
   );
-  if (!owner || owner !== viewer) {
-    return NextResponse.json({ error: "Not allowed to delete this post." }, { status: 403 });
+
+  const isOwner = viewerUserId
+    ? rowUserId === viewerUserId
+    : Boolean(rowDeviceId && viewerDeviceId && rowDeviceId === viewerDeviceId);
+
+  if (!isOwner) {
+    return NextResponse.json(
+      { error: "Not allowed to delete this post." },
+      { status: 403 },
+    );
   }
 
   const photoPath = photoPublicUrlToStoragePath(

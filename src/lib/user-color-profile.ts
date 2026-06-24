@@ -6,7 +6,6 @@ import {
   normalizeExtractedColors,
   type ExtractedColor,
 } from "@/lib/dominant-color";
-import { normalizeJoySpotsDeviceId } from "@/lib/joy-spots-device";
 
 export type UserColorTemperature = {
   warm: number;
@@ -21,15 +20,15 @@ export type TopHueBucket = {
   representative_hex: string;
 };
 
-/** Supabase table storing rolling color aggregates per device. */
+/** Supabase table storing rolling color aggregates per user. */
 export const USER_COLOR_PROFILE_TABLE = "user_color_profile";
 
 /** Columns on public.user_color_profile (matches live Supabase schema). */
 export const USER_COLOR_PROFILE_SELECT =
-  "device_id, hue_buckets, avg_saturation, avg_lightness, saturation_variance, color_temperature, top_hue_buckets, updated_at";
+  "user_id, hue_buckets, avg_saturation, avg_lightness, saturation_variance, color_temperature, top_hue_buckets, updated_at";
 
 export type UserColorProfile = {
-  device_id: string;
+  user_id: string;
   hue_buckets: Record<string, number>;
   avg_saturation: number;
   avg_lightness: number;
@@ -234,17 +233,16 @@ function computeProfileMetrics(rows: Array<Record<string, unknown>>) {
 
 export async function recomputeUserColorProfile(
   supabase: SupabaseClient,
-  deviceId: string,
+  userId: string,
 ): Promise<UserColorProfile | null> {
-  const normalizedDeviceId = normalizeJoySpotsDeviceId(deviceId);
-  if (!normalizedDeviceId) {
-    throw new Error("Device id is required");
+  if (!userId) {
+    throw new Error("User id is required");
   }
 
   const { data: rows, error } = await supabase
     .from("joy_spots")
     .select("id, created_at, extracted_colors, dominant_color")
-    .eq("device_id", normalizedDeviceId)
+    .eq("user_id", userId)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -257,11 +255,11 @@ export async function recomputeUserColorProfile(
     .from(USER_COLOR_PROFILE_TABLE)
     .upsert(
       {
-        device_id: normalizedDeviceId,
+        user_id: userId,
         ...metrics,
         updated_at: new Date().toISOString(),
       },
-      { onConflict: "device_id" },
+      { onConflict: "user_id" },
     )
     .select(USER_COLOR_PROFILE_SELECT)
     .single();
@@ -282,7 +280,7 @@ export function mapUserColorProfileRow(
   row: Record<string, unknown>,
 ): UserColorProfile {
   return {
-    device_id: String(row.device_id ?? ""),
+    user_id: String(row.user_id ?? ""),
     hue_buckets:
       row.hue_buckets && typeof row.hue_buckets === "object"
         ? (row.hue_buckets as Record<string, number>)

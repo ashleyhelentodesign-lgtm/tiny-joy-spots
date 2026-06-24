@@ -53,8 +53,8 @@ export function StickySiteHeaderBar({
   return (
     <div
       className={cn(
-        "sticky top-0 z-40 border-b border-transparent bg-transparent px-[72px] transition-colors duration-200",
-        elevated && "bg-white",
+        "sticky top-0 z-40 border-b border-transparent bg-white px-[36px] transition-colors duration-200 md:px-[72px]",
+        elevated && "border-[#ede8e2] shadow-sm",
         className,
       )}
     >

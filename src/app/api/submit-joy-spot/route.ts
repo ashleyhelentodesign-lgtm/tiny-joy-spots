@@ -5,6 +5,7 @@ import { normalizeExtractedColors } from "@/lib/dominant-color";
 import { JOY_SPOTS_DEVICE_COOKIE } from "@/lib/joy-spots-device";
 import { JOY_SPOT_PHOTOS_BUCKET } from "@/lib/joy-spot-storage";
 import { recomputeUserColorProfile } from "@/lib/user-color-profile";
+import { createClient as createServerClient } from "@/lib/supabase/server";
 
 function parseCookie(header: string, name: string): string | null {
   const parts = header.split(";").map((p) => p.trim());
@@ -111,6 +112,11 @@ export async function POST(request: Request) {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
+  // Detect authenticated user from the session cookie (anon key client).
+  const serverSupabase = await createServerClient();
+  const { data: { user: authUser } } = await serverSupabase.auth.getUser();
+  const userId = authUser?.id ?? null;
+
   const formData = await request.formData();
 
   const cookieHeader = request.headers.get("cookie") ?? "";
@@ -185,21 +191,22 @@ export async function POST(request: Request) {
   const mood =
     typeof moodRaw === "string" && moodRaw.trim() ? moodRaw.trim() : null;
 
-  const { data: deviceProfile } = await supabase
-    .from("profiles")
-    .select("id, display_name")
-    .eq("device_id", deviceId)
-    .maybeSingle();
+  // Look up profile: by user_id for authenticated users, by device_id for anon.
+  const profileQuery = userId
+    ? supabase.from("profiles").select("id, display_name").eq("user_id", userId)
+    : supabase.from("profiles").select("id, display_name").eq("device_id", deviceId);
+
+  const { data: ownerProfile } = await profileQuery.maybeSingle();
 
   let profile_id: string | null = null;
   let contributor_name: string | null = null;
 
-  if (deviceProfile?.id) {
-    profile_id = deviceProfile.id as string;
+  if (ownerProfile?.id) {
+    profile_id = ownerProfile.id as string;
     if (wantsNamedCredit) {
       const fromProfile =
-        typeof deviceProfile.display_name === "string"
-          ? deviceProfile.display_name.trim()
+        typeof ownerProfile.display_name === "string"
+          ? ownerProfile.display_name.trim()
           : "";
       contributor_name =
         fromProfile ||
@@ -219,6 +226,9 @@ export async function POST(request: Request) {
     contributor_name,
     device_id: deviceId,
   };
+  if (userId) {
+    insertPayload.user_id = userId;
+  }
   if (profile_id) {
     insertPayload.profile_id = profile_id;
   }
@@ -268,11 +278,13 @@ export async function POST(request: Request) {
   }
 
   let colorRecomputeError: string | null = null;
-  try {
-    await recomputeUserColorProfile(supabase, deviceId);
-  } catch (err) {
-    colorRecomputeError = err instanceof Error ? err.message : String(err);
-    console.error("[Profile color] recompute failed:", colorRecomputeError);
+  if (userId) {
+    try {
+      await recomputeUserColorProfile(supabase, userId);
+    } catch (err) {
+      colorRecomputeError = err instanceof Error ? err.message : String(err);
+      console.error("[Profile color] recompute failed:", colorRecomputeError);
+    }
   }
 
   const response = NextResponse.json({

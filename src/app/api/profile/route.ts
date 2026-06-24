@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { NextResponse } from "next/server";
 
 import {
   mapProfileRow,
@@ -8,12 +8,9 @@ import {
   validateProfileInsert,
 } from "@/lib/profile";
 import { recomputeUserColorProfile } from "@/lib/user-color-profile";
-import {
-  JOY_SPOTS_DEVICE_COOKIE,
-  parseJoySpotsDeviceCookie,
-} from "@/lib/joy-spots-device";
+import { createClient as createServerClient } from "@/lib/supabase/server";
 
-function supabaseAdmin() {
+function adminClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !serviceKey) return null;
@@ -22,73 +19,53 @@ function supabaseAdmin() {
   });
 }
 
-function deviceFromRequest(request: Request): {
-  deviceId: string;
-  issuedDeviceCookie: boolean;
-} {
-  const cookieHeader = request.headers.get("cookie") ?? "";
-  let deviceId = parseJoySpotsDeviceCookie(cookieHeader);
-  let issuedDeviceCookie = false;
-  if (!deviceId) {
-    deviceId = crypto.randomUUID().toLowerCase();
-    issuedDeviceCookie = true;
-  }
-  return { deviceId, issuedDeviceCookie };
-}
+const PROFILE_SELECT =
+  "id, user_id, device_id, display_name, bio, avatar_color, created_at";
 
-function withDeviceCookie(
-  response: NextResponse,
-  deviceId: string,
-  issued: boolean,
-) {
-  if (issued) {
-    response.cookies.set(JOY_SPOTS_DEVICE_COOKIE, deviceId, {
-      path: "/",
-      maxAge: 60 * 60 * 24 * 365,
-      sameSite: "lax",
-      httpOnly: false,
-    });
-  }
-  return response;
-}
+export async function GET() {
+  const supabase = await createServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export async function GET(request: Request) {
-  const supabase = supabaseAdmin();
-  if (!supabase) {
-    return NextResponse.json(
-      { error: "Server misconfigured." },
-      { status: 500 },
-    );
+  if (!user) {
+    return NextResponse.json({ profile: null });
   }
 
-  const { deviceId, issuedDeviceCookie } = deviceFromRequest(request);
+  const admin = adminClient();
+  if (!admin) {
+    return NextResponse.json({ error: "Server misconfigured." }, { status: 500 });
+  }
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from("profiles")
-    .select("id, device_id, display_name, bio, avatar_color, created_at")
-    .eq("device_id", deviceId)
+    .select(PROFILE_SELECT)
+    .eq("user_id", user.id)
     .maybeSingle();
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 
-  const response = NextResponse.json({
+  return NextResponse.json({
     profile: data ? mapProfileRow(data as Record<string, unknown>) : null,
   });
-  return withDeviceCookie(response, deviceId, issuedDeviceCookie);
 }
 
 export async function POST(request: Request) {
-  const supabase = supabaseAdmin();
-  if (!supabase) {
-    return NextResponse.json(
-      { error: "Server misconfigured." },
-      { status: 500 },
-    );
+  const supabase = await createServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Not authenticated." }, { status: 401 });
   }
 
-  const { deviceId, issuedDeviceCookie } = deviceFromRequest(request);
+  const admin = adminClient();
+  if (!admin) {
+    return NextResponse.json({ error: "Server misconfigured." }, { status: 500 });
+  }
 
   let body: unknown;
   try {
@@ -107,36 +84,32 @@ export async function POST(request: Request) {
         ? raw.bio
         : "";
 
-  const validation = validateProfileInsert({
-    device_id: deviceId,
-    display_name,
-    bio,
-  });
+  const validation = validateProfileInsert({ display_name, bio });
   if (!validation.ok) {
     return NextResponse.json({ error: validation.error }, { status: 400 });
   }
 
-  const { data: existing } = await supabase
+  const { data: existing } = await admin
     .from("profiles")
     .select("id")
-    .eq("device_id", deviceId)
+    .eq("user_id", user.id)
     .maybeSingle();
 
   if (existing) {
     return NextResponse.json(
-      { error: "You already have a profile on this device." },
+      { error: "You already have a profile." },
       { status: 409 },
     );
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await admin
     .from("profiles")
     .insert({
-      device_id: deviceId,
+      user_id: user.id,
       display_name: normalizeProfileDisplayName(display_name),
       bio: normalizeProfileBio(bio),
     })
-    .select("id, device_id, display_name, bio, avatar_color, created_at")
+    .select(PROFILE_SELECT)
     .single();
 
   if (error || !data) {
@@ -146,15 +119,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    await recomputeUserColorProfile(supabase, deviceId);
+    await recomputeUserColorProfile(admin, user.id);
   } catch (recomputeError) {
     if (process.env.NODE_ENV === "development") {
       console.error("[Profile color] initial recompute failed", recomputeError);
     }
   }
 
-  const response = NextResponse.json({
+  return NextResponse.json({
     profile: mapProfileRow(data as Record<string, unknown>),
   });
-  return withDeviceCookie(response, deviceId, issuedDeviceCookie);
 }
